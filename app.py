@@ -4,7 +4,7 @@ from flask_login import login_required
 app = Flask(__name__)
 app.secret_key = 'Dheeraj@2006'
 users = {
-    'user1': {'username': 'user1', 'password': 'password1'},
+    'dheeraj@gmail.com': {'username': 'dheeraj@gmail.com', 'password': 'dheeraj@gmail.com'},
     'user2': {'username': 'user2', 'password': 'password2'}
 }
 
@@ -19,11 +19,12 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-
+        print(username,password)
         if username in users and users[username]['password'] == password:
             session['username'] = username
+            print(session)
             flash('Login successful!', 'success')
-            return redirect(url_for('home'))
+            return redirect(url_for('index'))
         else:
             flash('Invalid username or password. Please try again.', 'error')
 
@@ -48,7 +49,7 @@ def signup():
 def logout():
     session.pop('username', None)
     flash('You have been logged out.', 'success')
-    return redirect(url_for('home'))
+    return redirect(url_for('login'))
 
 
 if __name__ == '__main__':
