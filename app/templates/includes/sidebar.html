@@ -4,7 +4,7 @@
       <a class="navbar-brand m-0" 
          href="https://appseed.us/product/material-dashboard/flask/" target="_blank">
         <img src="/static/assets/img/logo-ct.png" class="navbar-brand-img h-100" alt="main_logo">
-        <span class="ms-1 font-weight-bold text-white">Material Dashboard 2</span>
+        <span class="ms-1 font-weight-bold text-white">Tikun Automation</span>
       </a>
     </div>
     <hr class="horizontal light mt-0 mb-2">
@@ -21,14 +21,34 @@
         </li>
         <li class="nav-item">
           <a class="nav-link text-white {% if 'tables' in segment %} active bg-gradient-primary {% endif %}" 
-             href="/tables.html">
+             href="{{url_for('general_bp.leads')}}">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">table_view</i>
             </div>
-            <span class="nav-link-text ms-1">Tables</span>
+            <span class="nav-link-text ms-1">All Leads</span>
           </a>
         </li>
+
         <li class="nav-item">
+          <a class="nav-link text-white {% if 'tables' in segment %} active bg-gradient-primary {% endif %}" 
+             href="{{url_for('general_bp.AUTO_EMAIL')}}">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">table_view</i>
+            </div>
+            <span class="nav-link-text ms-1">Auto EMail</span>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link text-white {% if 'tables' in segment %} active bg-gradient-primary {% endif %}" 
+             href="{{url_for('general_bp.AUTO_TEXT')}}">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">table_view</i>
+            </div>
+            <span class="nav-link-text ms-1">Auto TEXT</span>
+          </a>
+        </li>
+        <!-- <li class="nav-item">
           <a class="nav-link text-white {% if 'billing' in segment %} active bg-gradient-primary {% endif %}" 
              href="/billing.html">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -36,8 +56,8 @@
             </div>
             <span class="nav-link-text ms-1">Billing</span>
           </a>
-        </li>
-        <li class="nav-item">
+        </li> -->
+        <!-- <li class="nav-item">
           <a class="nav-link text-white {% if 'virtual' in segment %} active bg-gradient-primary {% endif %}" 
              href="/virtual-reality.html">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -45,15 +65,15 @@
             </div>
             <span class="nav-link-text ms-1">Virtual Reality</span>
           </a>
-        </li>
-        <li class="nav-item">
+        </li> -->
+        <!-- <li class="nav-item">
           <a class="nav-link text-white " href="/rtl.html">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">format_textdirection_r_to_l</i>
             </div>
             <span class="nav-link-text ms-1">RTL</span>
           </a>
-        </li>
+        </li> -->
         <li class="nav-item">
           <a class="nav-link text-white {% if 'notifications' in segment %} active bg-gradient-primary {% endif %}" 
              href="/notifications.html">
@@ -66,7 +86,7 @@
         <li class="nav-item mt-3">
           <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Account pages</h6>
         </li>
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <a class="nav-link text-white {% if 'profile' in segment %} active bg-gradient-primary {% endif %}" 
              href="/profile.html">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -74,9 +94,9 @@
             </div>
             <span class="nav-link-text ms-1">Profile</span>
           </a>
-        </li>
+        </li> -->
         <li class="nav-item">
-          <a class="nav-link text-white " href="{{ url_for('logout') }}">
+          <a class="nav-link text-white " href="{{ url_for('general_bp.logout') }}">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">directions_run</i>
             </div>
@@ -85,12 +105,12 @@
         </li>
       </ul>
     </div>
-    <div class="sidenav-footer position-absolute w-100 bottom-0 ">
+    <!-- <div class="sidenav-footer position-absolute w-100 bottom-0 ">
       <div class="mx-3">
         <a class="btn bg-gradient-primary mt-4 w-100" 
            target="_blank" 
            href="https://appseed.us/support/" type="button">Support</a>
       </div>
-    </div>
+    </div> -->
   </aside>
   

@@ -1,0 +1,352 @@
+{% extends "layouts/base.html" %} {% block title %} Dashboard {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %} {% block content %}
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+    
+    .popup {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #fff;
+        padding: 20px;
+        border: 1px solid #ccc;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+    }
+    
+    .popup-content {
+        text-align: center;
+    }
+    
+    .close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+    }
+    
+  #csvPreview {
+    max-width: 100%;
+    overflow-x: auto; /* Enable horizontal scrolling */
+    max-height: 300px; /* Set a max height for vertical scrolling */
+  }
+
+  #csvPreview table {
+    width: auto; /* Allow the table to be as wide as its content */
+    table-layout: auto; /* Adjust table layout */
+  }
+
+  #csvPreview th, #csvPreview td {
+    padding: 8px; /* Adjust cell padding for a more compact appearance */
+    text-align: left; /* Align text to the left */
+  }
+
+  #csvLoader {
+    display: none;
+  }
+
+  #formContainer {
+    max-width: 500px;
+    margin: auto;
+  }
+
+  #csvFile {
+    display: none; /* Hide the default file input */
+  }
+
+  #customFileBtn {
+    cursor: pointer;
+    padding: 10px 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #333;
+  }
+
+  #textToSend {
+    resize: vertical;
+    min-height: 150px;
+    width: 300px; /* Set the width to 50% of the screen size */
+    max-width: 100%; /* Ensure it doesn't exceed 100% of the screen size */
+  }
+  #selectedFileName {
+    margin-top: 10px;
+    font-style: italic;
+  }
+</style>
+
+
+</style>
+</style>
+<div class="container-fluid py-4">
+  <div class="row">
+    <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+      <div class="card">
+        <div class="card-header p-3 pt-2">
+          <div
+            class="icon icon-lg icon-shape bg-gradient-dark shadow-dark text-center border-radius-xl mt-n4 position-absolute"
+          >
+            <i class="material-icons opacity-10">weekend</i>
+          </div>
+          <div class="text-end pt-1">
+            <p class="text-sm mb-0 text-capitalize">Tot Leads</p>
+            <h4 class="mb-0">5.2k</h4>
+          </div>
+        </div>
+        <hr class="dark horizontal my-0" />
+        <div class="card-footer p-3">
+          <p class="mb-0">
+            <span class="text-success text-sm font-weight-bolder">+55% </span
+            >than lask week
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+      <div class="card">
+        <div class="card-header p-3 pt-2">
+          <div
+            class="icon icon-lg icon-shape bg-gradient-primary shadow-primary text-center border-radius-xl mt-n4 position-absolute"
+          >
+            <i class="material-icons opacity-10">person</i>
+          </div>
+          <div class="text-end pt-1">
+            <p class="text-sm mb-0 text-capitalize">Today's Emails</p>
+            <h4 class="mb-0">2,300</h4>
+          </div>
+        </div>
+        <hr class="dark horizontal my-0" />
+        <div class="card-footer p-3">
+          <p class="mb-0">
+            <span class="text-success text-sm font-weight-bolder">+3% </span
+            >than lask month
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+      <div class="card">
+        <div class="card-header p-3 pt-2">
+          <div
+            class="icon icon-lg icon-shape bg-gradient-success shadow-success text-center border-radius-xl mt-n4 position-absolute"
+          >
+            <i class="material-icons opacity-10">person</i>
+          </div>
+          <div class="text-end pt-1">
+            <p class="text-sm mb-0 text-capitalize">Today's Text</p>
+            <h4 class="mb-0">3,462</h4>
+          </div>
+        </div>
+        <hr class="dark horizontal my-0" />
+        <div class="card-footer p-3">
+          <p class="mb-0">
+            <span class="text-danger text-sm font-weight-bolder">-2%</span> than
+            yesterday
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-3 col-sm-6">
+      <div class="card">
+        <div class="card-header p-3 pt-2">
+          <div
+            class="icon icon-lg icon-shape bg-gradient-info shadow-info text-center border-radius-xl mt-n4 position-absolute"
+          >
+            <i class="material-icons opacity-10">weekend</i>
+          </div>
+          <div class="text-end pt-1">
+            <p class="text-sm mb-0 text-capitalize">Your Sales</p>
+            <h4 class="mb-0">$103,430</h4>
+          </div>
+        </div>
+        <hr class="dark horizontal my-0" />
+        <div class="card-footer p-3">
+          <p class="mb-0">
+            <span class="text-success text-sm font-weight-bolder">+5% </span
+            >than yesterday
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="card my-4">
+        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+          <div
+            class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3"
+          >
+            <h6 class="text-white text-capitalize ps-3">Email Automation</h6>
+          </div>
+        </div>
+         <!-- Form -->
+    <div class="card-body mt-4" id="formContainer">
+      <form action="{{url_for('general_bp.AUTO_EMAIL')}}" id="myForm" method="post" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label for="emailSubject" class="form-label">Email Subject:</label>
+            <input type="text" class="form-control" id="emailSubject" name="emailSubject" required placeholder="Enter email subject...">
+          </div>
+        
+          <div class="mb-3">
+            <label for="emailBody" class="form-label">Email Body:</label>
+            <textarea class="form-control" id="emailBody" name="emailBody" rows="6" required placeholder="Enter email body..."></textarea>
+          </div>
+        <!-- Custom file input button -->
+        <div class="mb-3">
+          <label for="csvFile" class="form-label">Upload CSV File:</label>
+          <div id="customFileBtn">Choose File</div>
+          <div id="selectedFileName"></div>
+          <input type="file" class="form-control" id="csvFile" name="csvFile" accept=".csv" required>
+        </div>
+        <!-- End Custom file input button -->
+
+        <!-- Loader -->
+        <div id="csvLoader" class="text-center">
+          <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <p>Loading CSV Preview...</p>
+        </div>
+        <!-- End Loader -->
+        <input type="hidden" name="action" value="Email">
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+    <!-- End Form -->
+    <!-- Total Rows -->
+<div class="card-body mt-4">
+  <h5>Total Rows:</h5>
+  <div id="totalRows"></div>
+</div>
+<!-- End Total Rows -->
+        <!-- CSV Preview -->
+        <div class="card-body mt-4">
+          <h5>CSV Preview:</h5>
+          <div id="csvPreview"></div>
+        </div>
+        <!-- End CSV Preview -->
+      </div>
+      
+    </div>
+  </div>
+  <div class="popup" id="popup">
+    <div class="popup-content">
+        <span class="close" onclick="closePopup()">&times;</span>
+        <p></p>
+    </div>
+
+  </div>
+  {% if message %}
+<p>{{ message  }}</p> 
+ {% endif %}
+   {% include 'includes/footer.html' %}
+</div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<script>
+  $(document).ready(function() {
+    $('#customFileBtn').click(function() {
+      // Trigger click on the hidden file input
+      $('#csvFile').trigger('click');
+    });
+
+    $('#csvFile').change(function() {
+      // Show loader
+      $('#csvLoader').show();
+
+      // Display selected file name
+      const fileName = $(this).val().split('\\').pop();
+      $('#selectedFileName').text('Selected File: ' + fileName);
+
+      // Clear existing preview
+      $('#csvPreview').empty();
+
+      // Read the contents of the CSV file
+      const fileInput = document.getElementById('csvFile');
+      const file = fileInput.files[0];
+
+      if (file) {
+        const reader = new FileReader();
+
+        reader.onload = function(e) {
+          const csvData = e.target.result;
+          const rows = csvData.split('\n');
+
+          // Create a table for preview
+          const table = $('<table class="table"></table>');
+
+          // Add header row
+          const headerRow = $('<tr></tr>');
+          const headers = rows[0].split(',');
+          headers.forEach(header => {
+            headerRow.append($('<th scope="col">' + header + '</th>'));
+          });
+          table.append($('<thead></thead>').append(headerRow));
+
+          // Add data rows
+          for (let i = 1; i < rows.length; i++) {
+            const dataRow = $('<tr></tr>');
+            const rowData = rows[i].split(',');
+            rowData.forEach(data => {
+              dataRow.append($('<td>' + data + '</td>'));
+            });
+            table.append($('<tbody></tbody>').append(dataRow));
+          }
+
+          // Append the table to the preview container
+          $('#csvPreview').append(table);
+
+          // Display total number of rows
+          $('#totalRows').text('Total Rows: ' + (rows.length - 1));
+
+          // Hide loader after preview is ready
+          $('#csvLoader').hide();
+        };
+
+        reader.readAsText(file);
+      }
+    });
+  });
+
+  
+  function showPopup(data) {
+    const popup = document.getElementById("popup");
+    const popupContent = document.querySelector(".popup-content");
+
+    // Set the popup message
+    popupContent.innerHTML = `<p>${message.message}</p>`;
+
+    // Set the popup style based on the status
+    if (message.status === "success") {
+        popup.style.backgroundColor = "#4CAF50"; // Green color for success
+    } else if (message.status === "running") {
+        popup.style.backgroundColor = "#FFD700"; // Yellow color for running
+    }
+
+    // Display the popup
+    popup.style.display = "block";
+}
+
+function closePopup() {
+    // Close the popup
+    document.getElementById("popup").style.display = "none";
+}
+
+
+ 
+</script>
+
+{% endblock javascripts %}

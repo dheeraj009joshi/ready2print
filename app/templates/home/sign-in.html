@@ -39,8 +39,8 @@
             <div class="card-body">
               <form role="form" method= "post" class="text-start">
                 <div class="input-group input-group-outline my-3">
-                  <label class="form-label">Email</label>
-                  <input type="email" name="username" class="form-control">
+                  <label class="form-label">Username</label>
+                  <input type="text" name="username" class="form-control">
                 </div>
                 <div class="input-group input-group-outline mb-3">
                   <label class="form-label">Password</label>
@@ -55,7 +55,7 @@
                 </div>
                 <p class="mt-4 text-sm text-center">
                   Don't have an account?
-                  <a href="{{url_for('signup')}}" class="text-primary text-gradient font-weight-bold">Sign up</a>
+                  <a href="{{url_for('general_bp.signup')}}" class="text-primary text-gradient font-weight-bold">Sign up</a>
                 </p>
               </form>
             </div>
