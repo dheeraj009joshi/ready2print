@@ -4,7 +4,7 @@ import pandas as pd
 from Route.User_route import user_bp
 from Model.Thread_mode import ThreadInfo
 import threading
-from functione import onelogin_login, selenium_task
+from app.function import onelogin_login, selenium_task
 
 app = Flask(__name__)
  

@@ -1,9 +1,9 @@
 import threading
-from flask import Blueprint, flash,request,redirect,render_template, session, url_for
-from functione import current_user, selenium_task,login_required
+from flask import Blueprint, flash, jsonify,request,redirect,render_template, session, url_for
+from app.function import  auto_email, auto_text, selenium_task,login_required
 from ..DB.Db_config import collection
 import pandas as pd
-from ..Model.User_model import UserSchema
+from bson.objectid import ObjectId
 
 general_bp = Blueprint('general_bp', __name__)
 
@@ -33,6 +33,13 @@ def AUTO_EMAIL():
         global all_threads
         all_threads = [thread for thread in all_threads if thread["Thread"].is_alive()]
         action=request.form['action']
+        email_subject=request.form['emailSubject']
+        email_body=request.form['emailBody']
+        csv_data=request.files['csvFile']
+        if csv_data:
+            df = pd.read_csv(csv_data)
+            df = df.dropna(subset=['Lead_url'])
+            lead_url_list = df['Lead_url'].tolist()
         for t in all_threads:
             if t['Action'] == action and t['Thread'].name==session['user_id']+"_"+action and t['Thread'].is_alive():
                 print("Thread is running.")
@@ -40,7 +47,8 @@ def AUTO_EMAIL():
                 data={"status":"success","message":"thread already running  "}
                 return render_template('home/auto-email.html', message=data)
             # If no running thread found, create a new one
-        th = threading.Thread(target=selenium_task, args=(), name=session['user_id']+"_"+action)
+        print(lead_url_list)
+        th = threading.Thread(target=auto_email, args=(lead_url_list,email_subject,email_body,session['user_id'],), name=session['user_id']+"_"+action)
         all_threads.append({"Action": action, "Thread": th})
         th.start()
         print("Thread is not running. Creating a new thread.")
@@ -55,9 +63,14 @@ def AUTO_EMAIL():
 @login_required
 def AUTO_TEXT():
     if request.method=="POST":
+        print(request.form)
         global all_threads
         all_threads = [thread for thread in all_threads if thread["Thread"].is_alive()]
         action=request.form['action']
+        message= request.form['textToSend']
+        csv_data=request.files['csvFile']
+        if csv_data:
+            df = pd.read_csv(csv_data)
         for t in all_threads:
             if t['Action'] == action and t['Thread'].name==session['user_id']+"_"+action and t['Thread'].is_alive():
                 print("Thread is running.")
@@ -65,6 +78,7 @@ def AUTO_TEXT():
                 data={"status":"success","message":"thread already running  "}
                 return render_template('home/auto-text.html', message=data)
             # If no running thread found, create a new one
+        # th = threading.Thread(target=auto_text, args=(df['Lead_url'],message,session['user_id']), name=session['user_id']+"_"+action)
         th = threading.Thread(target=selenium_task, args=(), name=session['user_id']+"_"+action)
         all_threads.append({"Action": action, "Thread": th})
         th.start()
@@ -103,7 +117,14 @@ def login():
 
     return render_template('home/sign-in.html')
 
-
+@general_bp.route('/get_user_details',methods=['GET'])
+def get_user_details():
+    user_id=session['user_id']
+    user_id = ObjectId(str(user_id))
+    data = collection.find_one({"_id": user_id})
+    data.pop("_id")
+    return data
+    
 
 @general_bp.route('/signup', methods=['GET', 'POST'])
 def signup():
