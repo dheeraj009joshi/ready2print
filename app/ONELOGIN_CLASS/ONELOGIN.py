@@ -13,12 +13,15 @@ from selenium.webdriver.common.by import By
 from selenium import webdriver
 from app.ONELOGIN_CLASS import config
 import pandas as pd 
+from selenium.webdriver.edge.service import Service
+
+
 from app.ONELOGIN_CLASS.function import calculate_days_difference, time_difference_in_minutes
 class onLogin:
 
     def __init__(self):
-        
-        self.driver=webdriver.Edge()
+        service = Service(executable_path='msedgedriver.exe')
+        self.driver=webdriver.Edge(service=service)
         print(self.driver.capabilities)
     def login_to_oneLogin(self,username=config.ONELOGIN_USERNAME,password=config.ONELOGIN_PASSWORD):
         self.driver.get("https://group1auto.onelogin.com/")
