@@ -7,10 +7,6 @@ from selenium import webdriver
 from app.DB.Db_config import collection
 from app.ONELOGIN_CLASS.ONELOGIN import onLogin
 import smtplib
-<<<<<<< HEAD
-=======
-import ssl
->>>>>>> 82792f8d287dc2e0e0eb624368aacce72b9491e3
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
