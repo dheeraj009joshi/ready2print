@@ -1,3 +1,67 @@
+
+  {% if message and  message.status=="success"  %}
+
+
+                <!-- Success Alert Component -->
+                <div id="pop" style="display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                padding: 10px 20px;
+                margin-bottom: 20px;
+                align-items:center;
+                color: white;
+                border-radius:10px;
+                background-color: lightgreen;">
+                    <div class="card-content white-text">
+                        
+                        <p style="margin:0px" >Success!  {{ message.message }}</p>
+                    </div>
+                    <div class="card-action">
+                        <a href="#" class="white-text" id="closeBtn">X</a>
+                    </div>
+                </div>
+ 
+  {% elif message and message.status=="running" %}
+   <!-- Success Alert Component -->
+   <div id="pop" style="display: flex;
+   flex-direction: row;
+   justify-content: space-between;
+   padding: 10px 20px;
+   margin-bottom: 20px;
+   align-items:center;
+   color: white;
+   border-radius:10px;
+   background-color: lightgreen;">
+       <div class="card-content white-text">
+           <p style="margin:0px">Success!  {{ message.message }}</p>
+       </div>
+       <div class="card-action">
+           <a href="#" class="white-text" id="closeBtn">X</a>
+       </div>
+   </div>
+  {% elif message and message.status=="fail" %}
+   <!-- Success Alert Component -->
+   <div id="pop" style="display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 10px 20px;
+    align-items:center;
+    margin-bottom: 20px;
+    color: white;
+    border-radius:10px
+    background-color: red;">
+       <div class="card-content white-text">
+          
+           <p style="margin:0px">Success!  {{ message.message }}</p>
+       </div>
+       <div class="card-action">
+           <a href="#" class="white-text" id="closeBtn">X</a>
+       </div>
+   </div>
+    
+  {% endif %}
+  
+  
 <div class="row">
     <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
       <div class="card">
@@ -112,4 +176,11 @@ var intervalID = setInterval(update_values,1000);
     function stopTextColor() {
       clearInterval(intervalID);
     }
+</script>
+<!-- Add JavaScript to close the alert on button click -->
+<script>
+  document.getElementById('closeBtn').addEventListener('click', function() {
+      var alert = document.getElementById('pop');
+      alert.style.display = 'none';
+  });
 </script>

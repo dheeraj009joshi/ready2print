@@ -30,32 +30,38 @@ def leads():
 @login_required
 def AUTO_EMAIL():
     if request.method=="POST":
-        global all_threads
-        all_threads = [thread for thread in all_threads if thread["Thread"].is_alive()]
-        action=request.form['action']
-        email_subject=request.form['emailSubject']
-        email_body=request.form['emailBody']
-        csv_data=request.files['csvFile']
-        if csv_data:
-            df = pd.read_csv(csv_data)
-            df = df.dropna(subset=['Lead_url'])
-            lead_url_list = df['Lead_url'].tolist()
-        for t in all_threads:
-            if t['Action'] == action and t['Thread'].name==session['user_id']+"_"+action and t['Thread'].is_alive():
-                print("Thread is running.")
-                print(all_threads)
-                data={"status":"success","message":"thread already running  "}
-                return render_template('home/auto-email.html', message=data)
-            # If no running thread found, create a new one
-        print(lead_url_list)
-        th = threading.Thread(target=auto_email, args=(lead_url_list,email_subject,email_body,session['user_id'],), name=session['user_id']+"_"+action)
-        all_threads.append({"Action": action, "Thread": th})
-        th.start()
-        print("Thread is not running. Creating a new thread.")
-        print(all_threads)
-        data={"status":"success","message":"Auto email started , Check your phone for the otp and verify it  "}
-        return render_template('home/auto-email.html', message=data)
-    
+        try:
+            global all_threads
+            all_threads = [thread for thread in all_threads if thread["Thread"].is_alive()]
+            action=request.form['action']
+            email_subject=request.form['emailSubject']
+            email_body=request.form['emailBody']
+            csv_data=request.files['csvFile']
+            if csv_data:
+                df = pd.read_csv(csv_data)
+                df = df.dropna(subset=['Lead_url'])
+                lead_url_list = df['Lead_url'].tolist()
+            for t in all_threads:
+                if t['Action'] == action and t['Thread'].name==session['user_id']+"_"+action and t['Thread'].is_alive():
+                    print("Thread is running.")
+                    print(all_threads)
+                    data={"status":"running","message":"thread already running  "}
+                    return render_template('home/auto-email.html', message=data)
+                # If no running thread found, create a new one
+            print(lead_url_list)
+            th = threading.Thread(target=selenium_task, args=(), name=session['user_id']+"_"+action)
+            # th = threading.Thread(target=auto_email, args=(lead_url_list,email_subject,email_body,session['user_id'],), name=session['user_id']+"_"+action)
+            all_threads.append({"Action": action, "Thread": th})
+            th.start()
+            print("Thread is not running. Creating a new thread.")
+            print(all_threads)
+            data={"status":"success","message":"Auto email started , Check your phone for the otp and verify it  "}
+            return render_template('home/auto-email.html', message=data)
+        except Exception as err:
+            data={"status":"fail","message":f"The thread cannot be created due to following error :- {err}"}
+            return render_template('home/auto-email.html', message=data)
+            
+        
     return render_template('home/auto-email.html')
 
 
@@ -95,17 +101,10 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-
         # Query the database for the user
         user_data = collection.find_one({'username': username, 'password': password})
-        print(user_data['_id'])
-      
+        print(user_data)
         if user_data:
-            # Create a User object using the UserSchema
-            # user_schema = UserSchema()
-            # user = user_schema.load(user_data)
-
-            # Store user information in the session
             session['user_id'] = str(user_data['_id'])
             session['username'] = user_data['username']
 
@@ -113,7 +112,9 @@ def login():
             next_url = request.args.get('next') or url_for('general_bp.index')
             return redirect(next_url)
         else:
-            flash('Invalid username or password. Please try again.', 'error')
+            print("dfvk;lhgdk;gehjglhg;ghie;g")
+            data='Invalid username or password. Please try again.'
+            return render_template('home/sign-in.html',message=data )
 
     return render_template('home/sign-in.html')
 
