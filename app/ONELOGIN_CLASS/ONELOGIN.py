@@ -17,7 +17,11 @@ from app.ONELOGIN_CLASS.function import calculate_days_difference, time_differen
 class onLogin:
 
     def __init__(self):
-        self.driver=webdriver.Edge()
+        options = webdriver.EdgeOptions()
+        options.use_chromium = True
+        options.add_argument("headless")
+        options.add_argument("disable-gpu")
+        self.driver=webdriver.Edge(options=options)
         print(self.driver.capabilities)
     def login_to_oneLogin(self,username=config.ONELOGIN_USERNAME,password=config.ONELOGIN_PASSWORD):
         self.driver.get("https://group1auto.onelogin.com/")
