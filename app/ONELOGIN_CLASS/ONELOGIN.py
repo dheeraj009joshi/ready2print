@@ -20,6 +20,11 @@ from app.ONELOGIN_CLASS.function import calculate_days_difference, time_differen
 class onLogin:
 
     def __init__(self):
+        options = webdriver.EdgeOptions()
+        options.use_chromium = True
+        options.add_argument("headless")
+        options.add_argument("disable-gpu")
+        self.driver=webdriver.Edge(options=options)
         service = Service(executable_path='msedgedriver.exe')
         self.driver=webdriver.Edge(service=service)
         print(self.driver.capabilities)
