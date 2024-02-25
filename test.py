@@ -88,6 +88,7 @@ def auto_email(user_id,all_urls,email_subject,email_body):
     user = collection.find_one({"_id": user_id})
     object=onLogin()
     object.login_to_oneLogin()
+    time.sleep(10)
     object.open_eleads_oneLogin()
     for url in all_urls:
         try:
