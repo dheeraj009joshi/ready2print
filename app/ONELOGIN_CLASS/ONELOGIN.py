@@ -17,11 +17,8 @@ from app.ONELOGIN_CLASS.function import calculate_days_difference, time_differen
 class onLogin:
 
     def __init__(self):
-        options = webdriver.EdgeOptions()
-        options.use_chromium = True
-        options.add_argument("headless")
-        options.add_argument("disable-gpu")
-        self.driver=webdriver.Edge(options=options)
+        
+        self.driver=webdriver.Edge()
         print(self.driver.capabilities)
     def login_to_oneLogin(self,username=config.ONELOGIN_USERNAME,password=config.ONELOGIN_PASSWORD):
         self.driver.get("https://group1auto.onelogin.com/")
@@ -173,15 +170,10 @@ class onLogin:
                     subject.click()
                     subject.send_keys(subject_text)
                     subject.click()
-                    source=self.driver.find_element(By.XPATH,'//*[@id="cke_18_label"]')
-                    source.click()
-                    time.sleep(2)
-                    body=self.driver.find_element(By.XPATH,'//*[@id="cke_1_contents"]/textarea')
-                    # textarea = driver.find_element("xpath", "//textarea[@id='your_textarea_id']")
-
-                    # Use JavaScript to set the value of the textarea
-                    new_text = "Your new text goes here."
-                    self.driver.execute_script("arguments[0].value = arguments[1]", body, body_text)
+                    # source=self.driver.find_element(By.XPATH,'//*[@id="cke_18_label"]')
+                    # source.click()
+                    # time.sleep(2)
+                    # body=self.driver.find_element(By.XPATH,'//*[@id="cke_1_contents"]/textarea')
                     # body.click()
                     # time.sleep(0.5)
                     # body.clear()
@@ -189,21 +181,21 @@ class onLogin:
                     # body.send_keys(body_text)
                     # print("body text is written down")
                     # body.click()
+                    # time.sleep()
+                    # self.driver.find_element(By.XPATH,'//*[@id="btnSend"]').click()
+                    # print("Email sent button clicked")
+                    # time.sleep(4) 
+                    frame_for_body=self.driver.find_element(By.XPATH,'//*[@id="cke_1_contents"]/iframe')
+                    self.driver.switch_to.frame(frame_for_body)
+                    time.sleep(2)
+                    body=self.driver.find_element(By.XPATH,'/html/body')
+                    body.click()
+                    body.send_keys(body_text)
+                    body.click()
+                    self.driver.switch_to.default_content()
                     time.sleep(2)
                     self.driver.find_element(By.XPATH,'//*[@id="btnSend"]').click()
-                    print("Email sent button clicked")
                     time.sleep(4) 
-                    # frame_for_body=self.driver.find_element(By.XPATH,'//*[@id="cke_1_contents"]/iframe')
-                    # self.driver.switch_to.frame(frame_for_body)
-                    # time.sleep(2)
-                    # body=self.driver.find_element(By.XPATH,'/html/body')
-                    # body.click()
-                    # body.send_keys(body_text)
-                    # body.click()
-                    # self.driver.switch_to.default_content()
-                    # time.sleep(2)
-                    # self.driver.find_element(By.XPATH,'//*[@id="btnSend"]').click()
-                    # time.sleep(4) 
             except Exception as Error_in_sending_mail:
                 print(f"got error in mail send :- {Error_in_sending_mail}")
         
