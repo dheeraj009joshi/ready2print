@@ -7,30 +7,60 @@
         font-family: Arial, sans-serif;
     }
     
+    
+
+  .popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 5%;
+    border-radius: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    z-index: 99999;
+    width: 80%;
+    background-color: rgb(44, 44, 44);
+    max-width: 600px;
+
+  }
+
+  .popup-content {
+    position: relative;
+  }
+
+  .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    font-size: 20px;
+  }
+
+  /* Add more styles as needed */
+
+  @media (max-width: 768px) {
     .popup {
-        display: none;
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background-color: #fff;
-        padding: 20px;
-        border: 1px solid #ccc;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-        z-index: 1000;
+      width: 90%;
+      /* Adjust width for smaller screens */
     }
-    
-    .popup-content {
-        text-align: center;
+
+    .card2 {
+      max-width: 80px;
+      min-width: 80px;
     }
-    
-    .close {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        cursor: pointer;
+  }
+
+  @media (max-width: 400px) {
+
+    .card2 {
+      max-width: 80px;
+      min-width: 80px;
     }
-    
+  }
+
+      
   #csvPreview {
     max-width: 100%;
     overflow-x: auto; /* Enable horizontal scrolling */
@@ -86,7 +116,7 @@
 </style>
 <div class="container-fluid py-4">
   {% include 'includes/top-row.html' %}
-  <div class="row">
+  <div class="row mt-4">
     <div class="col-12">
       <div class="card my-4">
         <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
@@ -99,21 +129,23 @@
          <!-- Form -->
     <div class="card-body mt-4" id="formContainer">
       <form action="{{url_for('general_bp.AUTO_EMAIL')}}" id="myForm" method="post" enctype="multipart/form-data">
-        <div class="mb-3">
-            <label for="emailSubject" class="form-label">Email Subject:</label>
-            <input type="text" class="form-control" id="emailSubject" name="emailSubject" required placeholder="Enter email subject...">
-          </div>
-        
+        <div class="row">
           <div class="mb-3">
-            <label for="emailBody" class="form-label">Email Body:</label>
-            <textarea class="form-control" id="emailBody" name="emailBody" rows="6" required placeholder="Enter email body..."></textarea>
+              <label for="emailSubject" class="form-label">Email Subject:</label>
+              <input type="text" class="form-control" id="emailSubject" name="emailSubject" required placeholder="Enter email subject...">
+            </div>
+          
+            <div class="mb-3">
+              <label for="emailBody" class="form-label">Email Body:</label>
+              <textarea class="form-control" id="emailBody" name="emailBody" rows="6" required placeholder="Enter email body..."></textarea>
+            </div>
+          <!-- Custom file input button -->
+          <div class="mb-3">
+            <label for="csvFile" class="form-label">Upload CSV File:</label>
+            <div id="customFileBtn">Choose File</div>
+            <div id="selectedFileName"></div>
+            <input type="file" class="form-control" id="csvFile" name="csvFile" accept=".csv" required>
           </div>
-        <!-- Custom file input button -->
-        <div class="mb-3">
-          <label for="csvFile" class="form-label">Upload CSV File:</label>
-          <div id="customFileBtn">Choose File</div>
-          <div id="selectedFileName"></div>
-          <input type="file" class="form-control" id="csvFile" name="csvFile" accept=".csv" required>
         </div>
         <!-- End Custom file input button -->
 
@@ -146,16 +178,9 @@
       
     </div>
   </div>
-  <div class="popup" id="popup">
-    <div class="popup-content">
-        <span class="close" onclick="closePopup()">&times;</span>
-        <p></p>
-    </div>
 
-  </div>
-  {% if message %}
-<p>{{ message  }}</p> 
- {% endif %}
+  <!--pop up -->
+
    {% include 'includes/footer.html' %}
 </div>
 
@@ -230,31 +255,6 @@
       }
     });
   });
-
-  
-  function showPopup(data) {
-    const popup = document.getElementById("popup");
-    const popupContent = document.querySelector(".popup-content");
-
-    // Set the popup message
-    popupContent.innerHTML = `<p>${message.message}</p>`;
-
-    // Set the popup style based on the status
-    if (message.status === "success") {
-        popup.style.backgroundColor = "#4CAF50"; // Green color for success
-    } else if (message.status === "running") {
-        popup.style.backgroundColor = "#FFD700"; // Yellow color for running
-    }
-
-    // Display the popup
-    popup.style.display = "block";
-}
-
-function closePopup() {
-    // Close the popup
-    document.getElementById("popup").style.display = "none";
-}
-
 
  
 </script>
