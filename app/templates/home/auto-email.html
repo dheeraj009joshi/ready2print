@@ -115,7 +115,70 @@
 </style>
 </style>
 <div class="container-fluid py-4">
-  {% include 'includes/top-row.html' %}
+ 
+  {% if message and  message.status=="success"  %}
+
+
+                <!-- Success Alert Component -->
+                <div id="pop" style="display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                padding: 10px 20px;
+                margin-bottom: 20px;
+                align-items:center;
+                color: white;
+                border-radius:10px;
+                background-color: lightgreen;">
+                    <div class="card-content white-text">
+                        
+                        <p style="margin:0px" >Success!  {{ message.message }}</p>
+                    </div>
+                    <div class="card-action">
+                        <a href="#" class="white-text" id="closeBtn">X</a>
+                    </div>
+                </div>
+ 
+  {% elif message and message.status=="running" %}
+   <!-- Success Alert Component -->
+   <div id="pop" style="display: flex;
+   flex-direction: row;
+   justify-content: space-between;
+   padding: 10px 20px;
+   margin-bottom: 20px;
+   align-items:center;
+   color: white;
+   border-radius:10px;
+   background-color: lightgreen;">
+       <div class="card-content white-text">
+           <p style="margin:0px">Success!  {{ message.message }}</p>
+       </div>
+       <div class="card-action">
+           <a href="#" class="white-text" id="closeBtn">X</a>
+       </div>
+   </div>
+  {% elif message and message.status=="fail" %}
+   <!-- Success Alert Component -->
+   <div id="pop" style="display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 10px 20px;
+    align-items:center;
+    margin-bottom: 20px;
+    color: white;
+    border-radius:10px
+    background-color: red;">
+       <div class="card-content white-text">
+          
+           <p style="margin:0px">Success!  {{ message.message }}</p>
+       </div>
+       <div class="card-action">
+           <a href="#" class="white-text" id="closeBtn">X</a>
+       </div>
+   </div>
+    
+  {% endif %}
+  
+  
   <div class="row mt-4">
     <div class="col-12">
       <div class="card my-4">

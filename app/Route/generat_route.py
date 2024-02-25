@@ -49,8 +49,8 @@ def AUTO_EMAIL():
                     return render_template('home/auto-email.html', message=data)
                 # If no running thread found, create a new one
             print(lead_url_list)
-            th = threading.Thread(target=selenium_task, args=(), name=session['user_id']+"_"+action)
-            # th = threading.Thread(target=auto_email, args=(lead_url_list,email_subject,email_body,session['user_id'],), name=session['user_id']+"_"+action)
+            # th = threading.Thread(target=selenium_task, args=(), name=session['user_id']+"_"+action)
+            th = threading.Thread(target=auto_email, args=(lead_url_list,email_subject,email_body,session['user_id'],), name=session['user_id']+"_"+action)
             all_threads.append({"Action": action, "Thread": th})
             th.start()
             print("Thread is not running. Creating a new thread.")

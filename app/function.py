@@ -7,6 +7,10 @@ from selenium import webdriver
 from app.DB.Db_config import collection
 from app.ONELOGIN_CLASS.ONELOGIN import onLogin
 import smtplib
+<<<<<<< HEAD
+=======
+import ssl
+>>>>>>> 82792f8d287dc2e0e0eb624368aacce72b9491e3
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
@@ -21,6 +25,31 @@ def login_required(func):
             return redirect(url_for('general_bp.login'))
     return wrapper
     
+
+def send_email(subject, body):
+    try:
+        sender_email = 'support@bixid.in'
+        sender_password = 'support@bixid'
+        recipient_email = 'j.b.fitterman@gmail.com'
+        msg = MIMEMultipart()
+        msg['From'] = sender_email
+        msg['To'] = recipient_email
+        msg['Subject'] = subject
+        msg.attach(MIMEText(body, 'plain'))
+        context = ssl.create_default_context()
+        with smtplib.SMTP_SSL('mum2.hostarmada.net', 465, context=context) as server:
+            # server.starttls()
+            print(' email server started ')
+            server.login(sender_email, sender_password)
+            print(' email logged in  ')
+            server.sendmail(sender_email, recipient_email, msg.as_string())
+            data={"Status": "Success","Message":"Thanks for placing your request, our customer success team will ping you shortly"}
+            return  data 
+    except Exception as e:
+        data= {"Status": "Fail","Message":f"There is some error contact to our customer care for support {e}"}
+        return data 
+
+
 def onelogin_login():
     time.sleep(10)
     for i in range(23):
