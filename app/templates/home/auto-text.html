@@ -52,13 +52,112 @@
     margin-top: 10px;
     font-style: italic;
   }
+
+  #formContainer {
+    max-width: 500px;
+    margin: auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  #customFileBtn:hover {
+    background-color: #0056b3; /* Darker color on hover */
+    color: #fff;
+  }
+  
+  #textToSend {
+    resize: vertical;
+    min-height: 150px;
+    width: 100%; /* Set the width to 100% of the container */
+    padding: 10px; /* Add padding for better appearance */
+  }
+  
+  #csvLoader {
+    display: none;
+    margin-top: 20px;
+    text-align: center; /* Center the loader text */
+  }
+  
+  #csvLoader .spinner-border {
+    color: #007bff; /* Set spinner color */
+  }
+  
+  #selectedFileName {
+    margin-top: 10px;
+    font-style: italic;
+    color: #333; /* Set color for the selected file text */
+  }
+  
 </style>
 
 
 </style>
 </style>
 <div class="container-fluid py-4">
+  
+  {% if message and  message.status=="success"  %}
+
+
+                <!-- Success Alert Component -->
+                <div id="pop" style="display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                padding: 10px 20px;
+                margin-bottom: 20px;
+                align-items:center;
+                color: white;
+                border-radius:10px;
+                background-color: lightgreen;">
+                    <div class="card-content white-text">
+                        
+                        <p style="margin:0px" >Success!  {{ message.message }}</p>
+                    </div>
+                    <div class="card-action">
+                        <a href="#" class="white-text" id="closeBtn">X</a>
+                    </div>
+                </div>
  
+  {% elif message and message.status=="running" %}
+   <!-- Success Alert Component -->
+   <div id="pop" style="display: flex;
+   flex-direction: row;
+   justify-content: space-between;
+   padding: 10px 20px;
+   margin-bottom: 20px;
+   align-items:center;
+   color: white;
+   border-radius:10px;
+   background-color: lightgreen;">
+       <div class="card-content white-text">
+           <p style="margin:0px">  {{ message.message }}</p>
+       </div>
+       <div class="card-action">
+           <a href="#" class="white-text" id="closeBtn">X</a>
+       </div>
+   </div>
+  {% elif message and message.status=="fail" %}
+   <!-- Success Alert Component -->
+   <div id="pop" style="display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 10px 20px;
+    align-items:center;
+    margin-bottom: 20px;
+    color: white;
+    border-radius:10px
+    background-color: red;">
+       <div class="card-content white-text">
+          
+           <p style="margin:0px">  {{ message.message }}</p>
+       </div>
+       <div class="card-action">
+           <a href="#" class="white-text" id="closeBtn">X</a>
+       </div>
+   </div>
+    
+  {% endif %}
   <div class="row mt-4">
     
     <div class="col-12">
