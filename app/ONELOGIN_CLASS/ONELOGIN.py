@@ -11,7 +11,6 @@ from functools import partial
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.by import By
 from selenium import webdriver
-from webdriver_manager.microsoft import EdgeChromiumDriverManager
 from app.ONELOGIN_CLASS import config
 import pandas as pd 
 from selenium.webdriver.edge.service import Service
@@ -25,8 +24,9 @@ class onLogin:
         options.use_chromium = True
         options.add_argument("headless")
         options.add_argument("disable-gpu")
-        service = Service(EdgeChromiumDriverManager().install())
-        self.driver=webdriver.Edge(service=service,options=options)
+       
+        self.driver=webdriver.Edge(options=options)
+        # self.driver=webdriver.Edge()
         print(self.driver.capabilities)
     def login_to_oneLogin(self,username=config.ONELOGIN_USERNAME,password=config.ONELOGIN_PASSWORD):
         self.driver.get("https://group1auto.onelogin.com/")
@@ -144,7 +144,7 @@ class onLogin:
             {"Match":False}
                  
 
-    def send_email(self,url,email_subject,email_body):
+    def send_email_via_html(self,url,email_subject,email_body):
             self.driver.get(url)
             time.sleep(5)
             main_window = self.driver.current_window_handle
@@ -197,7 +197,48 @@ class onLogin:
                     time.sleep(2)
                     self.driver.find_element(By.XPATH,'//*[@id="btnSend"]').click()
                     print("Email sent button clicked")
-                    time.sleep(4) 
+                    time.sleep(2) 
+            except Exception as Error_in_sending_mail:
+                print(f"got error in mail send :- {Error_in_sending_mail}")
+        
+            self.driver.switch_to.window(main_window)
+  
+
+
+    def send_email_via_text(self,url,email_subject,email_body):
+            self.driver.get(url)
+            time.sleep(5)
+            main_window = self.driver.current_window_handle
+            try:
+                all_lebal_url=self.driver.find_element(By.XPATH,'//html/body/form/div[3]/table[1]/tbody/tr[1]/td[2]/a').click()
+                # all_lebal_urls[email_index].click()
+                time.sleep(5)
+                # main_window = driver.current_window_handle
+                popup_window = None
+
+                # Iterate through all available windows and find the popup window
+                for handle in self.driver.window_handles:
+                    if handle != main_window:
+                        popup_window = handle
+
+                # Switch the focus to the popup window
+                pop=self.driver.switch_to.window(popup_window)
+                email_available_or_not=self.driver.find_element(By.XPATH,'//*[@id="szTo"]').get_attribute("value")
+                print(email_available_or_not)
+                print("")
+                print("")
+                print("")
+                if email_available_or_not :
+                    name=self.driver.find_element(By.XPATH,"/html/body/form[2]/table[1]/tbody/tr[2]/td[1]")
+                    print(f"name= {name.text}")
+                    # emailed_user.write(name.text+"\n")
+                    Name=name.text.split(":")[-1]
+                    subject_text=email_subject
+                    body_text=f"{email_body}"
+                    subject=self.driver.find_element(By.XPATH,'//*[@id="szSubject"]')
+                    subject.click()
+                    subject.send_keys(subject_text)
+                    subject.click()
                     frame_for_body=self.driver.find_element(By.XPATH,'//*[@id="cke_1_contents"]/iframe')
                     self.driver.switch_to.frame(frame_for_body)
                     time.sleep(2)
@@ -208,12 +249,19 @@ class onLogin:
                     self.driver.switch_to.default_content()
                     time.sleep(2)
                     self.driver.find_element(By.XPATH,'//*[@id="btnSend"]').click()
-                    time.sleep(4) 
+                    time.sleep(4)
+                    print("Email sent button clicked")
+                    time.sleep(2) 
             except Exception as Error_in_sending_mail:
                 print(f"got error in mail send :- {Error_in_sending_mail}")
         
             self.driver.switch_to.window(main_window)
   
+
+
+
+
+
     def send_message(self,url,message_text):
             self.driver.get(url)
             time.sleep(5)
@@ -777,5 +825,3 @@ class onLogin:
 
     def end_session(self):
         self.driver.quit()
-
-

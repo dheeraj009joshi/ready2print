@@ -1,6 +1,6 @@
 import threading
 from flask import Blueprint, flash, jsonify,request,redirect,render_template, session, url_for
-from app.function import  auto_email, auto_text, selenium_task,login_required
+from app.function import   auto_email_via_html, auto_email_via_text, auto_text, selenium_task,login_required
 from ..DB.Db_config import collection
 import pandas as pd
 from bson.objectid import ObjectId
@@ -37,6 +37,8 @@ def AUTO_EMAIL():
             email_subject=request.form['emailSubject']
             email_body=request.form['emailBody']
             csv_data=request.files['csvFile']
+            selected_option = request.form.get('myDropdown')
+            print(selected_option)
             if csv_data:
                 df = pd.read_csv(csv_data)
                 df = df.dropna(subset=['Lead_url'])
@@ -50,13 +52,23 @@ def AUTO_EMAIL():
                 # If no running thread found, create a new one
             print(lead_url_list)
             # th = threading.Thread(target=selenium_task, args=(), name=session['user_id']+"_"+action)
-            th = threading.Thread(target=auto_email, args=(lead_url_list,email_subject,email_body,session['user_id'],), name=session['user_id']+"_"+action)
-            all_threads.append({"Action": action, "Thread": th})
-            th.start()
-            print("Thread is not running. Creating a new thread.")
-            print(all_threads)
-            data={"status":"success","message":"Auto email started , Check your phone for the otp and verify it  "}
-            return render_template('home/auto-email.html', message=data)
+            if selected_option=='Text':
+                th = threading.Thread(target=auto_email_via_text, args=(lead_url_list,email_subject,email_body,session['user_id'],), name=session['user_id']+"_"+action)
+                all_threads.append({"Action": action, "Thread": th})
+                th.start()
+                print("Thread is not running. Creating a new thread.")
+                print(all_threads)
+                data={"status":"success","message":"Auto email started , Check your phone for the otp and verify it  "}
+                return render_template('home/auto-email.html', message=data)
+            elif selected_option=='Html':
+                th = threading.Thread(target=auto_email_via_html, args=(lead_url_list,email_subject,email_body,session['user_id'],), name=session['user_id']+"_"+action)
+                all_threads.append({"Action": action, "Thread": th})
+                th.start()
+                print("Thread is not running. Creating a new thread.")
+                print(all_threads)
+                data={"status":"success","message":"Auto email started , Check your phone for the otp and verify it  "}
+                return render_template('home/auto-email.html', message=data)
+
         except Exception as err:
             data={"status":"fail","message":f"The thread cannot be created due to following error :- {err}"}
             return render_template('home/auto-email.html', message=data)

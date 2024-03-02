@@ -240,6 +240,14 @@
     <div class="card-body mt-4" id="formContainer">
       <form action="{{url_for('general_bp.AUTO_EMAIL')}}" id="myForm" method="post" enctype="multipart/form-data">
         <div class="row">
+
+          <div class="mb-3"> <label for="myDropdown">How you want to send email :</label>
+            <select id="myDropdown" name="myDropdown">
+                <option value="Text">Text</option>
+                <option value="Html">Html</option>
+               
+            </select>
+          </div>
           <div class="mb-3">
               <label for="emailSubject" class="form-label">Email Subject:</label>
               <input type="text" class="form-control" id="emailSubject" name="emailSubject" required placeholder="Enter email subject...">
