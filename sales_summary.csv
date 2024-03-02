@@ -1,0 +1,67 @@
+Metric,Value
+Num_Leads,722
+Percentage_Assigned,86.98060941828255
+Average_Delay_Assigned,168.62326869806094
+People_Assigned,"Person_Assigned
+Fitterman  J            46
+Joye  Jarrel            43
+Brown  Calvin           42
+Kolech  Tamirat         36
+Siegall  Beth           36
+Valdivia  Edwin         33
+Cenatus  Freddie        32
+Enriquez  Diego         32
+Jung  Ji Woo            29
+Nguyen  Tyler           29
+Rodriguez  Lenin        26
+Glenn  Sean             25
+Winston  Bertell        23
+Delgado  Mariangel      22
+Sanchez  Michael        22
+Zorrilla  Cesar         21
+Cazco  Diego            21
+Williams  Ariq          18
+Diaz  Daniel            17
+Reliford  Jessica       16
+Choudhury  Hasan        14
+Yusuf  Rehan            14
+Morales  Marc           12
+Pagano Gomez  Jose      11
+Ochoa Garcia  Eduaro     4
+World Toyota  -          2
+Perez  Simon             1
+Vazquez  Jason           1
+Name: Is_Assigned, dtype: int64"
+Average_Communication,"Person_Assigned
+Brown  Calvin           4.041667
+Cazco  Diego            3.956522
+Cenatus  Freddie        2.722222
+Choudhury  Hasan        3.466667
+Delgado  Mariangel      3.807692
+Diaz  Daniel            3.300000
+Enriquez  Diego         3.314286
+Fitterman  J            2.420000
+Glenn  Sean             2.920000
+Joye  Jarrel            4.617021
+Jung  Ji Woo            3.805556
+Kolech  Tamirat         3.743590
+Morales  Marc           3.000000
+Nguyen  Tyler           4.354839
+Ochoa Garcia  Eduaro    2.250000
+Pagano Gomez  Jose      3.923077
+Perez  Simon            3.000000
+Reliford  Jessica       3.000000
+Rodriguez  Lenin        2.928571
+Sanchez  Michael        3.678571
+Siegall  Beth           3.324324
+Valdivia  Edwin         4.175000
+Vazquez  Jason          4.000000
+Williams  Ariq          2.944444
+Winston  Bertell        7.115385
+World Toyota  -         3.619048
+Yusuf  Rehan            4.062500
+Zorrilla  Cesar         1.857143
+dtype: float64"
+Percentage_Texted,32.40997229916898
+Percentage_Appointment,13.29639889196676
+Percentage_Sold,0.0

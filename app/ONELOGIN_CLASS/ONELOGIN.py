@@ -11,6 +11,7 @@ from functools import partial
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.by import By
 from selenium import webdriver
+from webdriver_manager.microsoft import EdgeChromiumDriverManager
 from app.ONELOGIN_CLASS import config
 import pandas as pd 
 from selenium.webdriver.edge.service import Service
@@ -24,7 +25,7 @@ class onLogin:
         options.use_chromium = True
         options.add_argument("headless")
         options.add_argument("disable-gpu")
-        service = Service(executable_path='msedgedriver.exe')
+        service = Service(EdgeChromiumDriverManager().install())
         self.driver=webdriver.Edge(service=service,options=options)
         print(self.driver.capabilities)
     def login_to_oneLogin(self,username=config.ONELOGIN_USERNAME,password=config.ONELOGIN_PASSWORD):
@@ -177,10 +178,15 @@ class onLogin:
                     subject.click()
                     subject.send_keys(subject_text)
                     subject.click()
-                    # source=self.driver.find_element(By.XPATH,'//*[@id="cke_18_label"]')
-                    # source.click()
-                    # time.sleep(2)
-                    # body=self.driver.find_element(By.XPATH,'//*[@id="cke_1_contents"]/textarea')
+                    source=self.driver.find_element(By.XPATH,'//*[@id="cke_18_label"]')
+                    source.click()
+                    time.sleep(2)
+                    body=self.driver.find_element(By.XPATH,'//*[@id="cke_1_contents"]/textarea')
+                    # textarea = driver.find_element("xpath", "//textarea[@id='your_textarea_id']")
+
+                    # Use JavaScript to set the value of the textarea
+                    new_text = "Your new text goes here."
+                    self.driver.execute_script("arguments[0].value = arguments[1]", body, body_text)
                     # body.click()
                     # time.sleep(0.5)
                     # body.clear()
@@ -188,10 +194,10 @@ class onLogin:
                     # body.send_keys(body_text)
                     # print("body text is written down")
                     # body.click()
-                    # time.sleep()
-                    # self.driver.find_element(By.XPATH,'//*[@id="btnSend"]').click()
-                    # print("Email sent button clicked")
-                    # time.sleep(4) 
+                    time.sleep(2)
+                    self.driver.find_element(By.XPATH,'//*[@id="btnSend"]').click()
+                    print("Email sent button clicked")
+                    time.sleep(4) 
                     frame_for_body=self.driver.find_element(By.XPATH,'//*[@id="cke_1_contents"]/iframe')
                     self.driver.switch_to.frame(frame_for_body)
                     time.sleep(2)

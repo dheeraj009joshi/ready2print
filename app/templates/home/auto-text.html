@@ -24,10 +24,7 @@
     display: none;
   }
 
-  #formContainer {
-    max-width: 500px;
-    margin: auto;
-  }
+
 
   #csvFile {
     display: none; /* Hide the default file input */
@@ -55,13 +52,25 @@
 
   #formContainer {
     max-width: 500px;
-    margin: auto;
     padding: 20px;
+    margin-left:100px;
     background-color: #ffffff;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   }
   
+  .Form_image{
+     display:flex;
+     margin-top:40px;
+     flex-direction:reverse-column;
+  }
+
+  .img_mb-3{
+    margin-left:auto;
+     margin-right:auto;
+     margin-bottom:auto;
+     
+  }
   #customFileBtn:hover {
     background-color: #0056b3; /* Darker color on hover */
     color: #fff;
@@ -170,11 +179,12 @@
           </div>
         </div>
          <!-- Form -->
+         <div class="Form_image">
     <div class="card-body mt-4" id="formContainer">
       <form action="{{url_for('general_bp.AUTO_TEXT')}}" method="post" enctype="multipart/form-data">
         <div class="mb-3">
           <label for="textToSend" class="form-label">Text to Send:</label>
-          <textarea class="form-control" id="textToSend" name="textToSend" rows="6" required></textarea>
+          <textarea class="form-control" id="textToSend" name="textToSend" placeholder="Write your text here... "rows="6" required></textarea>
         </div>
 
         <!-- Custom file input button -->
@@ -184,6 +194,8 @@
           <div id="selectedFileName"></div>
           <input type="file" class="form-control" id="csvFile" name="csvFile" accept=".csv" required>
         </div>
+
+       
         <!-- End Custom file input button -->
 
         <!-- Loader -->
@@ -197,8 +209,11 @@
         <input type="hidden" name="action" value="Text">
         <button type="submit" class="btn btn-primary">Submit</button>
       </form>
-    </div>
-    <!-- End Form -->
+       </div>
+    
+       <div class="img_mb-3"><img src="https://messagemedia.com/au/wp-content/uploads/sites/3/2020/10/Examples-of-Automated-SMS-phone-3.jpg" alt=""></div>
+      </div>
+       <!-- End Form -->
     <!-- Total Rows -->
 <div class="card-body mt-4">
   <h5>Total Rows:</h5>
