@@ -1,6 +1,8 @@
 import threading
 from flask import Blueprint, flash, jsonify,request,redirect,render_template, session, url_for
-from app.function import   auto_email_via_html, auto_email_via_text, auto_text, selenium_task,login_required
+from app.ONELOGIN_CLASS.Auto_email import auto_email_via_html, auto_email_via_text
+from app.ONELOGIN_CLASS.Auto_text import auto_text
+from app.function import  selenium_task,login_required
 from ..DB.Db_config import collection
 import pandas as pd
 from bson.objectid import ObjectId
@@ -23,6 +25,23 @@ def index():
 @login_required
 def leads():
     return render_template('home/leads.html')
+
+
+@general_bp.route('/operations')
+@login_required
+def operations():
+    if request.method=="POST":
+        action=request.form['action']
+        if action=="get_leads":
+            pass
+        elif action =="get_manager_reports":
+            pass
+        elif action =="get_leads_multiprocessing":
+            pass
+        elif action == "get_manager_data_multiprocessing":
+            pass
+    
+    return render_template('home/operations.html')
 
 
 
@@ -96,8 +115,8 @@ def AUTO_TEXT():
                 data={"status":"success","message":"thread already running  "}
                 return render_template('home/auto-text.html', message=data)
             # If no running thread found, create a new one
-        # th = threading.Thread(target=auto_text, args=(df['Lead_url'],message,session['user_id']), name=session['user_id']+"_"+action)
-        th = threading.Thread(target=selenium_task, args=(), name=session['user_id']+"_"+action)
+        th = threading.Thread(target=auto_text, args=(df['Lead_url'],message,session['user_id']), name=session['user_id']+"_"+action)
+        # th = threading.Thread(target=selenium_task, args=(), name=session['user_id']+"_"+action)
         all_threads.append({"Action": action, "Thread": th})
         th.start()
         print("Thread is not running. Creating a new thread.")
@@ -106,6 +125,7 @@ def AUTO_TEXT():
         return render_template('home/auto-text.html', message=data)
     
     return render_template('home/auto-text.html')
+
 
 
 @general_bp.route('/login', methods=['GET', 'POST'])
