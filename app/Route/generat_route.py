@@ -68,9 +68,7 @@ def AUTO_EMAIL():
                     print(all_threads)
                     data={"status":"running","message":"thread already running  "}
                     return render_template('home/auto-email.html', message=data)
-                # If no running thread found, create a new one
             print(lead_url_list)
-            # th = threading.Thread(target=selenium_task, args=(), name=session['user_id']+"_"+action)
             if selected_option=='Text':
                 th = threading.Thread(target=auto_email_via_text, args=(lead_url_list,email_subject,email_body,session['user_id'],), name=session['user_id']+"_"+action)
                 all_threads.append({"Action": action, "Thread": th})
@@ -114,7 +112,6 @@ def AUTO_TEXT():
                 print(all_threads)
                 data={"status":"success","message":"thread already running  "}
                 return render_template('home/auto-text.html', message=data)
-            # If no running thread found, create a new one
         th = threading.Thread(target=auto_text, args=(df['Lead_url'],message,session['user_id']), name=session['user_id']+"_"+action)
         # th = threading.Thread(target=selenium_task, args=(), name=session['user_id']+"_"+action)
         all_threads.append({"Action": action, "Thread": th})
@@ -144,7 +141,7 @@ def login():
             next_url = request.args.get('next') or url_for('general_bp.index')
             return redirect(next_url)
         else:
-            print("dfvk;lhgdk;gehjglhg;ghie;g")
+            
             data='Invalid username or password. Please try again.'
             return render_template('home/sign-in.html',message=data )
 
