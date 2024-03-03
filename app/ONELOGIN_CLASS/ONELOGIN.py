@@ -49,58 +49,6 @@ class onLogin:
         time.sleep(10)
         print("login done")
         
-    def get_all_leads_urls(self):
-        self.driver.switch_to.window(self.driver.window_handles[1])
-        # driver.close()
-        try:
-            # driver.switch_to.window(driver.window_handles[2])
-            # driver.close()
-            self.driver.switch_to.window(self.driver.window_handles[2])
-        except:
-            pass 
-        
-        f=open(f"output_files/all_leads_all_in_one_{datetime.date.today()}.csv","a")
-        # f.write({"name"})
-        time.sleep(30)
-
-        vehicle_report=self.driver.find_element(By.XPATH,'/html/body/form[1]/div[3]/div/div[2]/div[7]/div/div[1]/div/div[1]/div/ul/li[2]/a').click()
-        time.sleep(2)
-        # frame=driver.find_elements(By.XPATH,'/html/body/form[1]/div[3]/div/div[3]/div[2]/iframe')
-        self.driver.switch_to.frame('Main')
-        time.sleep(2)
-        go=self.driver.find_element(By.XPATH,'/html/body/table[2]/tbody/tr[2]/td[2]/form/table/tbody/tr[2]/td/input').click()
-        time.sleep(5)
-        # frame2=driver.find_element(By.XPATH,'/html/body/form[1]/div[3]/div/div[3]/div[2]/iframe')
-        # driver.switch_to.frame('Main')
-        # time.sleep(2)
-        all_lead_urls=[]
-        all_rows_data_leads=self.driver.find_elements(By.XPATH,'/html/body/table[2]/tbody/tr')
-        for e_lead in all_rows_data_leads:
-            date=e_lead.find_element(By.XPATH,'td[1]').text
-            print(date)
-            if date !="":
-                try:
-                    print(date)
-                    name_lead=e_lead.find_element(By.XPATH,'td[2]/a').text
-                    lead_data_url=e_lead.find_element(By.XPATH,'td[2]/a').get_attribute("href")
-                    all_lead_urls.append(lead_data_url)
-                    # print(lead_data_url)
-                    f.write(str({"Date":date,"Name":name_lead,"Url":lead_data_url})+"\n")
-                    print(name_lead)
-                    print(lead_data_url)
-                except:
-                    pass
-            # break
-            elif date=='':
-                # break
-                pass
-        f.close()
-        return {"urls":all_lead_urls}
-
-
-
-
-
     def open_eleads_oneLogin(self):
         all_oprions_after_login=self.driver.find_elements(By.XPATH,'//*[@id="apps-view-container"]/div[2]/div/div/div/div/a/div/div[1]/div')
         for opt in all_oprions_after_login:
@@ -116,7 +64,6 @@ class onLogin:
         except:
             pass 
     
-
     def open_outlook_oneLogin(self):
         print("Opening outlook")
         all_oprions_after_login=self.driver.find_elements(By.XPATH,'//*[@id="apps-view-container"]/div[2]/div/div/div/div/a/div/div[1]/div')
@@ -132,7 +79,6 @@ class onLogin:
             self.driver.switch_to.window(self.driver.window_handles[2])
         except:
             pass 
-
 
     def get_otp_from_outlook_for_automotivemastermind(self):
         print("looking for otp")
@@ -159,7 +105,6 @@ class onLogin:
         otp=self.get_otp_from_outlook_for_automotivemastermind()
         return otp
     
-
     def search_lead(self,search_keyword):
         self.driver.switch_to.window(self.driver.window_handles[1])
         # driver.close()
@@ -193,7 +138,6 @@ class onLogin:
         else:
             {"Match":False}
                  
-
     def send_email_via_html(self,url,email_subject,email_body):
             self.driver.get(url)
             time.sleep(5)
@@ -252,8 +196,6 @@ class onLogin:
                 print(f"got error in mail send :- {Error_in_sending_mail}")
         
             self.driver.switch_to.window(main_window)
-  
-
 
     def send_email_via_text(self,url,email_subject,email_body):
             self.driver.get(url)
@@ -307,11 +249,6 @@ class onLogin:
         
             self.driver.switch_to.window(main_window)
   
-
-
-
-
-
     def send_message(self,url,message_text):
             self.driver.get(url)
             time.sleep(5)
@@ -373,11 +310,7 @@ class onLogin:
             
             self.driver.switch_to.window(main_window)
 
-
-
-
-
-    def close_all_extra_tab_and_windows(self):
+    def close_all_extra_tabe_and_windows(self):
         main_window_handle = self.driver.current_window_handle
         all_window_handles = self.driver.window_handles
         for window_handle in all_window_handles:
@@ -392,7 +325,7 @@ class onLogin:
         self.driver.switch_to.window(main_window_handle)
         pass
 
-    def get_lead_details(self, lead_urls, output_file):
+    def get_lead_details( lead_urls, output_file):
 
         
         a=onLogin() 
@@ -723,8 +656,6 @@ class onLogin:
         # Access results from the dictionary
         print("Leads task completed")
 
-
-
     def  get_tracking_info( Tracking_Name, lead_urls, output_file):
         a=onLogin() 
         a.login_to_oneLogin()
@@ -848,9 +779,6 @@ class onLogin:
         # Access results from the dictionary
         print("Tracking task completed")
 
-
-    
-
     def combine_csv_files(folder_path, output_filename):
    
         
@@ -867,11 +795,6 @@ class onLogin:
                
 
         print(f"Combination complete. Output saved as '{output_filename}'")
-
-
-
-
-
 
     def end_session(self):
         self.driver.quit()

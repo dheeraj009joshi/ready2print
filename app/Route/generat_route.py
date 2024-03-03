@@ -17,9 +17,9 @@ def index():
         action=request.form['hiddenField']
         print(action)
         if action:
-            return render_template('home/index.html',action=action)
+            return render_template('home/index.html',action=action,segment="index")
     else:
-        return render_template('home/index.html')
+        return render_template('home/index.html', segment="index")
 
 @general_bp.route('/leads')
 @login_required
@@ -67,10 +67,8 @@ def AUTO_EMAIL():
                     print("Thread is running.")
                     print(all_threads)
                     data={"status":"running","message":"thread already running  "}
-                    return render_template('home/auto-email.html', message=data)
-                # If no running thread found, create a new one
+                    return render_template('home/auto-email.html', message=data,segment="auto_email")
             print(lead_url_list)
-            # th = threading.Thread(target=selenium_task, args=(), name=session['user_id']+"_"+action)
             if selected_option=='Text':
                 th = threading.Thread(target=auto_email_via_text, args=(lead_url_list,email_subject,email_body,session['user_id'],), name=session['user_id']+"_"+action)
                 all_threads.append({"Action": action, "Thread": th})
@@ -78,7 +76,7 @@ def AUTO_EMAIL():
                 print("Thread is not running. Creating a new thread.")
                 print(all_threads)
                 data={"status":"success","message":"Auto email started , Check your phone for the otp and verify it  "}
-                return render_template('home/auto-email.html', message=data)
+                return render_template('home/auto-email.html', message=data,segment="auto_email")
             elif selected_option=='Html':
                 th = threading.Thread(target=auto_email_via_html, args=(lead_url_list,email_subject,email_body,session['user_id'],), name=session['user_id']+"_"+action)
                 all_threads.append({"Action": action, "Thread": th})
@@ -86,14 +84,14 @@ def AUTO_EMAIL():
                 print("Thread is not running. Creating a new thread.")
                 print(all_threads)
                 data={"status":"success","message":"Auto email started , Check your phone for the otp and verify it  "}
-                return render_template('home/auto-email.html', message=data)
+                return render_template('home/auto-email.html', message=data, segment="auto_email")
 
         except Exception as err:
             data={"status":"fail","message":f"The thread cannot be created due to following error :- {err}"}
-            return render_template('home/auto-email.html', message=data)
+            return render_template('home/auto-email.html', message=data, segment="auto_email")
             
         
-    return render_template('home/auto-email.html')
+    return render_template('home/auto-email.html',segment="auto_email")
 
 
 @general_bp.route('/auto-text', methods=['GET', 'POST'])
@@ -113,8 +111,7 @@ def AUTO_TEXT():
                 print("Thread is running.")
                 print(all_threads)
                 data={"status":"success","message":"thread already running  "}
-                return render_template('home/auto-text.html', message=data)
-            # If no running thread found, create a new one
+                return render_template('home/auto-text.html', message=data,segment="auto_text")
         th = threading.Thread(target=auto_text, args=(df['Lead_url'],message,session['user_id']), name=session['user_id']+"_"+action)
         # th = threading.Thread(target=selenium_task, args=(), name=session['user_id']+"_"+action)
         all_threads.append({"Action": action, "Thread": th})
@@ -122,9 +119,9 @@ def AUTO_TEXT():
         print("Thread is not running. Creating a new thread.")
         print(all_threads)
         data={"status":"success","message":"Auto text started , Check your phone for the otp and verify it  "}
-        return render_template('home/auto-text.html', message=data)
+        return render_template('home/auto-text.html', message=data,segment="auto_text")
     
-    return render_template('home/auto-text.html')
+    return render_template('home/auto-text.html', segment="auto_text")
 
 
 
@@ -144,7 +141,7 @@ def login():
             next_url = request.args.get('next') or url_for('general_bp.index')
             return redirect(next_url)
         else:
-            print("dfvk;lhgdk;gehjglhg;ghie;g")
+            
             data='Invalid username or password. Please try again.'
             return render_template('home/sign-in.html',message=data )
 
