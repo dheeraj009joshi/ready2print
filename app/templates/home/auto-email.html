@@ -3,11 +3,11 @@
 <!-- Specific Page CSS goes HERE  -->
 {% block stylesheets %}{% endblock stylesheets %} {% block content %}
 <style>
-    body {
-        font-family: Arial, sans-serif;
-    }
-    
-    
+  body {
+    font-family: Arial, sans-serif;
+  }
+
+
 
   .popup {
     display: none;
@@ -60,21 +60,28 @@
     }
   }
 
-      
+
   #csvPreview {
     max-width: 100%;
-    overflow-x: auto; /* Enable horizontal scrolling */
-    max-height: 300px; /* Set a max height for vertical scrolling */
+    overflow-x: auto;
+    /* Enable horizontal scrolling */
+    max-height: 300px;
+    /* Set a max height for vertical scrolling */
   }
 
   #csvPreview table {
-    width: auto; /* Allow the table to be as wide as its content */
-    table-layout: auto; /* Adjust table layout */
+    width: auto;
+    /* Allow the table to be as wide as its content */
+    table-layout: auto;
+    /* Adjust table layout */
   }
 
-  #csvPreview th, #csvPreview td {
-    padding: 8px; /* Adjust cell padding for a more compact appearance */
-    text-align: left; /* Align text to the left */
+  #csvPreview th,
+  #csvPreview td {
+    padding: 8px;
+    /* Adjust cell padding for a more compact appearance */
+    text-align: left;
+    /* Align text to the left */
   }
 
   #csvLoader {
@@ -83,7 +90,8 @@
 
 
   #csvFile {
-    display: none; /* Hide the default file input */
+    display: none;
+    /* Hide the default file input */
   }
 
   #customFileBtn {
@@ -98,75 +106,102 @@
   #textToSend {
     resize: vertical;
     min-height: 150px;
-    width: 300px; /* Set the width to 50% of the screen size */
-    max-width: 100%; /* Ensure it doesn't exceed 100% of the screen size */
+    width: 300px;
+    /* Set the width to 50% of the screen size */
+    max-width: 100%;
+    /* Ensure it doesn't exceed 100% of the screen size */
   }
+
   #selectedFileName {
     margin-top: 10px;
     font-style: italic;
   }
-  
-  .Form_image{
-    display:flex;
-    margin-top:40px
- }
 
- .img_mb-3{
-   margin-left:auto;
-    margin-right:auto;
-    margin-bottom:auto;
-    margin-top:50px;
-    
- }
+  .Form_image {
+    display: flex;
+    margin-top: 40px
+  }
+
+  .img_mb-3 {
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: auto;
+    margin-top: 50px;
+
+  }
+
   #formContainer {
     max-width: 500px;
-    margin-right:80px;
+    margin-left: 80px;
     padding: 20px;
     background-color: #ffffff;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   }
-  
+
   #customFileBtn:hover {
-    background-color: #0056b3; /* Darker color on hover */
+    background-color: #0056b3;
+    /* Darker color on hover */
     color: #fff;
   }
-  
+
   #textToSend {
     resize: vertical;
     min-height: 150px;
-    width: 100%; /* Set the width to 100% of the container */
-    padding: 10px; /* Add padding for better appearance */
+    width: 100%;
+    /* Set the width to 100% of the container */
+    padding: 10px;
+    /* Add padding for better appearance */
   }
-  
+
   #csvLoader {
     display: none;
     margin-top: 20px;
-    text-align: center; /* Center the loader text */
+    text-align: center;
+    /* Center the loader text */
   }
-  
+
   #csvLoader .spinner-border {
-    color: #007bff; /* Set spinner color */
+    color: #007bff;
+    /* Set spinner color */
   }
-  
+
   #selectedFileName {
     margin-top: 10px;
     font-style: italic;
-    color: #333; /* Set color for the selected file text */
+    color: #333;
+    /* Set color for the selected file text */
   }
-  
+
+  #hiddenHtmlEditor {
+    max-height: 500px;
+    height: 100%;
+    overflow-y: auto;
+  }
+
+  #emailBody {
+    max-height: 500px;
+    height: 100%;
+    overflow-y: auto;
+  }
+
+  #preview{
+    max-width: 500px;
+    margin-right: 80px;
+    padding: 20px;
+  }
 </style>
 
 
 </style>
 </style>
 <div class="container-fluid py-4">
- 
-  {% if message and  message.status=="success"  %}
+
+  {% if message and message.status=="success" %}
 
 
-                <!-- Success Alert Component -->
-                <div id="pop" style="display: flex;
+  <!-- Success Alert Component -->
+  <div id="pop" style="display: flex;
                 flex-direction: row;
                 justify-content: space-between;
                 padding: 10px 20px;
@@ -175,18 +210,18 @@
                 color: white;
                 border-radius:10px;
                 background-color: lightgreen;">
-                    <div class="card-content white-text">
-                        
-                        <p style="margin:0px" >Success!  {{ message.message }}</p>
-                    </div>
-                    <div class="card-action">
-                        <a href="#" class="white-text" id="closeBtn">X</a>
-                    </div>
-                </div>
- 
+    <div class="card-content white-text">
+
+      <p style="margin:0px">Success! {{ message.message }}</p>
+    </div>
+    <div class="card-action">
+      <a href="#" class="white-text" id="closeBtn">X</a>
+    </div>
+  </div>
+
   {% elif message and message.status=="running" %}
-   <!-- Success Alert Component -->
-   <div id="pop" style="display: flex;
+  <!-- Success Alert Component -->
+  <div id="pop" style="display: flex;
    flex-direction: row;
    justify-content: space-between;
    padding: 10px 20px;
@@ -195,16 +230,16 @@
    color: white;
    border-radius:10px;
    background-color: lightgreen;">
-       <div class="card-content white-text">
-           <p style="margin:0px">Success!  {{ message.message }}</p>
-       </div>
-       <div class="card-action">
-           <a href="#" class="white-text" id="closeBtn">X</a>
-       </div>
-   </div>
+    <div class="card-content white-text">
+      <p style="margin:0px">Success! {{ message.message }}</p>
+    </div>
+    <div class="card-action">
+      <a href="#" class="white-text" id="closeBtn">X</a>
+    </div>
+  </div>
   {% elif message and message.status=="fail" %}
-   <!-- Success Alert Component -->
-   <div id="pop" style="display: flex;
+  <!-- Success Alert Component -->
+  <div id="pop" style="display: flex;
     flex-direction: row;
     justify-content: space-between;
     padding: 10px 20px;
@@ -213,85 +248,116 @@
     color: white;
     border-radius:10px
     background-color: red;">
-       <div class="card-content white-text">
-          
-           <p style="margin:0px">Success!  {{ message.message }}</p>
-       </div>
-       <div class="card-action">
-           <a href="#" class="white-text" id="closeBtn">X</a>
-       </div>
-   </div>
-    
+    <div class="card-content white-text">
+
+      <p style="margin:0px">Success! {{ message.message }}</p>
+    </div>
+    <div class="card-action">
+      <a href="#" class="white-text" id="closeBtn">X</a>
+    </div>
+  </div>
+
   {% endif %}
-  
-  
+
+
   <div class="row mt-4">
     <div class="col-12">
       <div class="card my-4">
         <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-          <div
-            class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3"
-          >
+          <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
             <h6 class="text-white text-capitalize ps-3">Email Automation</h6>
           </div>
         </div>
-         <!-- Form -->
-         <div class="Form_image">
+        <!-- Form -->
+        <div class="Form_image">
 
-          <div class="img_mb-3"><img src="https://messagemedia.com/au/wp-content/uploads/sites/3/2020/10/Examples-of-Automated-SMS-phone-3.jpg" alt=""></div>
- 
-    <div class="card-body mt-4" id="formContainer">
-      <form action="{{url_for('general_bp.AUTO_EMAIL')}}" id="myForm" method="post" enctype="multipart/form-data">
-        <div class="row">
+          <div class="card-body mt-4" id="formContainer">
+            <form action="{{url_for('general_bp.AUTO_EMAIL')}}" id="myForm" method="post" enctype="multipart/form-data">
+              <div class="row">
 
-          <div class="mb-3"> <label for="myDropdown">How you want to send email :</label>
-            <select id="myDropdown" name="myDropdown">
-                <option value="Text">Text</option>
-                <option value="Html">Html</option>
-               
-            </select>
+                <div class="mb-3"> <label for="myDropdown">How you want to send email :</label>
+                  <select id="myDropdown" name="myDropdown">
+                    <option value="Text">Text</option>
+                    <option value="Html">Html</option>
+
+                  </select>
+                </div>
+
+                <div id="textFields"> <!-- Container for text fields -->
+                  <div class="mb-3">
+                    <label for="emailSubject" class="form-label">Email Subject:</label>
+                    <input type="text" class="form-control" id="emailSubject" name="emailSubject" required
+                      placeholder="Enter email subject...">
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="emailBody" class="form-label">Email Body:</label>
+                    <textarea class="form-control" id="emailBody" name="emailBody" rows="6" required
+                      placeholder="Enter email body..."></textarea>
+                  </div>
+                </div>
+
+                <div id="htmlFields" style="display:none;"> <!-- Container for HTML fields -->
+                  <!-- HTML Editor - You can replace this with your preferred HTML editor -->
+                  <div class="mb-3">
+                    <label for="emailSubject" class="form-label">Email Subject:</label>
+                    <input type="text" class="form-control" id="emailSubject" name="emailSubject" required
+                      placeholder="Enter email subject...">
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="htmlEditor" class="form-label">HTML Editor:</label>
+                    <div id="htmlEditor"></div>
+                    <textarea class="form-control" onkeyup="updatePreview()"  id="emailBody_html" name="emailBody" rows="6" required
+                      placeholder="Enter Html..."></textarea>
+                  </div>
+                </div>
+                <!-- Live Preview -->
+
+
+                <!-- Custom file input button -->
+                <div class="mb-3">
+                  <label for="csvFile" class="form-label">Upload CSV File:</label>
+                  <div id="customFileBtn">Choose File</div>
+                  <div id="selectedFileName"></div>
+                  <input type="file" class="form-control" id="csvFile" name="csvFile" accept=".csv" required>
+                </div>
+              </div>
+              <!-- End Custom file input button -->
+
+              <!-- Loader -->
+              <div id="csvLoader" class="text-center">
+                <div class="spinner-border" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+                <p>Loading CSV Preview...</p>
+              </div>
+              <!-- End Loader -->
+              <input type="hidden" name="action" value="Email">
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+
           </div>
-          <div class="mb-3">
-              <label for="emailSubject" class="form-label">Email Subject:</label>
-              <input type="text" class="form-control" id="emailSubject" name="emailSubject" required placeholder="Enter email subject...">
+            <div class="mb-3" id="preview"  style="display:none;">
+              <label for="livePreview" class="form-label">Live Preview:</label>
+              <div id="livePreview"></div>
+
             </div>
-          
-            <div class="mb-3">
-              <label for="emailBody" class="form-label">Email Body:</label>
-              <textarea class="form-control" id="emailBody" name="emailBody" rows="6" required placeholder="Enter email body..."></textarea>
-            </div>
-          <!-- Custom file input button -->
-          <div class="mb-3">
-            <label for="csvFile" class="form-label">Upload CSV File:</label>
-            <div id="customFileBtn">Choose File</div>
-            <div id="selectedFileName"></div>
-            <input type="file" class="form-control" id="csvFile" name="csvFile" accept=".csv" required>
-          </div>
+
         </div>
+        <!-- End Form -->
+        <!-- Total Rows -->
 
-        <!-- End Custom file input button -->
 
-        <!-- Loader -->
-        <div id="csvLoader" class="text-center">
-          <div class="spinner-border" role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>
-          <p>Loading CSV Preview...</p>
+
+
+
+
+        <div class="card-body mt-4">
+          <h5>Total Rows:</h5>
+          <div id="totalRows"></div>
         </div>
-        <!-- End Loader -->
-        <input type="hidden" name="action" value="Email">
-        <button type="submit" class="btn btn-primary">Submit</button>
-      </form>
-    </div>
-
-     </div>
-    <!-- End Form -->
-    <!-- Total Rows -->
-<div class="card-body mt-4">
-  <h5>Total Rows:</h5>
-  <div id="totalRows"></div>
-</div>
-<!-- End Total Rows -->
+        <!-- End Total Rows -->
         <!-- CSV Preview -->
         <div class="card-body mt-4">
           <h5>CSV Preview:</h5>
@@ -299,13 +365,13 @@
         </div>
         <!-- End CSV Preview -->
       </div>
-      
+
     </div>
   </div>
 
   <!--pop up -->
 
-   {% include 'includes/footer.html' %}
+  {% include 'includes/footer.html' %}
 </div>
 
 {% endblock content %}
@@ -314,15 +380,17 @@
 {% block javascripts %}
 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<!-- Include CKEditor 5 from CDN -->
+<script src="{{ url_for('static', filename='assets/js/ckeditor.js') }}"></script>
 
 <script>
-  $(document).ready(function() {
-    $('#customFileBtn').click(function() {
+  $(document).ready(function () {
+    $('#customFileBtn').click(function () {
       // Trigger click on the hidden file input
       $('#csvFile').trigger('click');
     });
 
-    $('#csvFile').change(function() {
+    $('#csvFile').change(function () {
       // Show loader
       $('#csvLoader').show();
 
@@ -340,7 +408,7 @@
       if (file) {
         const reader = new FileReader();
 
-        reader.onload = function(e) {
+        reader.onload = function (e) {
           const csvData = e.target.result;
           const rows = csvData.split('\n');
 
@@ -380,7 +448,42 @@
     });
   });
 
- 
+
+</script>
+
+<script>
+
+  document.addEventListener("DOMContentLoaded", function () {
+    var dropdown = document.getElementById("myDropdown");
+    var textFields = document.getElementById("textFields");
+    var htmlFields = document.getElementById("htmlFields");
+    var preview = document.getElementById("preview");
+
+    dropdown.addEventListener("change", function () {
+      if (dropdown.value === "Html") {
+        textFields.style.display = "none";
+        htmlFields.style.display = "block";
+        preview.style.display = "block";
+      } else {
+        textFields.style.display = "block";
+        htmlFields.style.display = "none";
+        preview.style.display = "none";
+      }
+    });
+  });
+
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const htmlInput = document.getElementById("emailBody_html");
+    const preview = document.getElementById("livePreview");
+
+    htmlInput.addEventListener("input", updatePreview);
+
+    function updatePreview() {
+        const htmlCode = htmlInput.value;
+        preview.innerHTML = htmlCode;
+    }
+});
 </script>
 
 {% endblock javascripts %}

@@ -1,18 +1,18 @@
-# import requests
+import requests
 
-# url = "https://api.hikerapi.com/a1/user/by/username"
-# params = {'username': 'wwe', 'access_key': 'lhj296a0Jh95iJyGs5cAIiA8Aq36AiU4'}
-# headers = {'accept': 'application/json'}
+url = "https://api.hikerapi.com/a1/user/by/username"
+params = {'username': 'wwe', 'access_key': 'lhj296a0Jh95iJyGs5cAIiA8Aq36AiU4'}
+headers = {'accept': 'application/json'}
 
-# response = requests.get(url, params=params, headers=headers)
+response = requests.get(url, params=params, headers=headers)
 
-# if response.status_code == 200:
-#     # Request was successful
-#     data = response.json()
-#     print(data)
-# else:
-#     # Request failed
-#     print(f"Error {response.status_code}: {response.text}")
+if response.status_code == 200:
+    # Request was successful
+    data = response.json()
+    print(data)
+else:
+    # Request failed
+    print(f"Error {response.status_code}: {response.text}")
 
 
 from instagrapi import Client
