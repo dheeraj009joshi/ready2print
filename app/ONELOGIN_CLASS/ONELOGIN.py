@@ -25,8 +25,8 @@ class onLogin:
         options.add_argument("headless")
         options.add_argument("disable-gpu")
        
-        self.driver=webdriver.Edge(options=options)
-        # self.driver=webdriver.Edge()
+        # self.driver=webdriver.Edge(options=options)
+        self.driver=webdriver.Edge()
         print(self.driver.capabilities)
     def login_to_oneLogin(self,username=config.ONELOGIN_USERNAME,password=config.ONELOGIN_PASSWORD):
         self.driver.get("https://group1auto.onelogin.com/")
