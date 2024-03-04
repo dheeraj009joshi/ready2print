@@ -32,6 +32,7 @@ def leads():
 def operations():
     if request.method=="POST":
         action=request.form['action']
+        print(action)
         if action=="get_leads":
             pass
         elif action =="get_manager_reports":
@@ -49,6 +50,7 @@ def operations():
 @login_required
 def AUTO_EMAIL():
     if request.method=="POST":
+    
         try:
             global all_threads
             all_threads = [thread for thread in all_threads if thread["Thread"].is_alive()]
@@ -170,6 +172,18 @@ def signup():
             return redirect(url_for('login'))
 
     return render_template('home/sign-up.html')
+
+
+@general_bp.route('/test', methods=['GET', 'POST'])
+def test():
+    return render_template("home/test.html")
+
+
+
+
+
+
+
 
 @general_bp.route('/logout')
 def logout():
