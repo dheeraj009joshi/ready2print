@@ -1,0 +1,340 @@
+{% extends "layouts/base.html" %} {% block title %} Dashboard {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %} {% block content %}
+    {# Add content specific to auto-text.html #}
+<style>
+  #csvPreview {
+    max-width: 100%;
+    overflow-x: auto; /* Enable horizontal scrolling */
+    max-height: 300px; /* Set a max height for vertical scrolling */
+  }
+
+  #csvPreview table {
+    width: auto; /* Allow the table to be as wide as its content */
+    table-layout: auto; /* Adjust table layout */
+  }
+
+  #csvPreview th, #csvPreview td {
+    padding: 8px; /* Adjust cell padding for a more compact appearance */
+    text-align: left; /* Align text to the left */
+  }
+
+  #csvLoader {
+    display: none;
+  }
+
+
+
+  #csvFile {
+    display: none; /* Hide the default file input */
+  }
+
+  #customFileBtn {
+    cursor: pointer;
+    padding: 10px 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #333;
+  }
+
+  #textToSend {
+    resize: vertical;
+    min-height: 150px;
+    width: 300px; /* Set the width to 50% of the screen size */
+    max-width: 100%; /* Ensure it doesn't exceed 100% of the screen size */
+  }
+  #selectedFileName {
+    margin-top: 10px;
+    font-style: italic;
+  }
+
+  #formContainer {
+    max-width: 500px;
+    padding: 20px;
+    margin-left:100px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .Form_image{
+     display:flex;
+     margin-top:40px;
+     flex-direction:reverse-column;
+  }
+
+  .img_mb-3{
+    margin-left:auto;
+     margin-right:auto;
+     margin-bottom:auto;
+     
+  }
+  #customFileBtn:hover {
+    background-color: #0056b3; /* Darker color on hover */
+    color: #fff;
+  }
+  
+  #textToSend {
+    resize: vertical;
+    min-height: 150px;
+    width: 100%; /* Set the width to 100% of the container */
+    padding: 10px; /* Add padding for better appearance */
+  }
+  
+  #csvLoader {
+    display: none;
+    margin-top: 20px;
+    text-align: center; /* Center the loader text */
+  }
+  
+  #csvLoader .spinner-border {
+    color: #007bff; /* Set spinner color */
+  }
+  
+  #selectedFileName {
+    margin-top: 10px;
+    font-style: italic;
+    color: #333; /* Set color for the selected file text */
+  }
+  
+</style>
+
+
+</style>
+</style>
+<div class="container-fluid py-4">
+  
+  {% if message and  message.status=="success"  %}
+
+
+                <!-- Success Alert Component -->
+                <div id="pop" style="display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                padding: 10px 20px;
+                margin-bottom: 20px;
+                align-items:center;
+                color: white;
+                border-radius:10px;
+                background-color: lightgreen;">
+                    <div class="card-content white-text">
+                        
+                        <p style="margin:0px" >Success!  {{ message.message }}</p>
+                    </div>
+                    <div class="card-action">
+                        <a href="#" class="white-text" id="closeBtn">X</a>
+                    </div>
+                </div>
+ 
+  {% elif message and message.status=="running" %}
+   <!-- Success Alert Component -->
+   <div id="pop" style="display: flex;
+   flex-direction: row;
+   justify-content: space-between;
+   padding: 10px 20px;
+   margin-bottom: 20px;
+   align-items:center;
+   color: white;
+   border-radius:10px;
+   background-color: lightgreen;">
+       <div class="card-content white-text">
+           <p style="margin:0px">  {{ message.message }}</p>
+       </div>
+       <div class="card-action">
+           <a href="#" class="white-text" id="closeBtn">X</a>
+       </div>
+   </div>
+  {% elif message and message.status=="fail" %}
+   <!-- Success Alert Component -->
+   <div id="pop" style="display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 10px 20px;
+    align-items:center;
+    margin-bottom: 20px;
+    color: white;
+    border-radius:10px
+    background-color: red;">
+       <div class="card-content white-text">
+          
+           <p style="margin:0px">  {{ message.message }}</p>
+       </div>
+       <div class="card-action">
+           <a href="#" class="white-text" id="closeBtn">X</a>
+       </div>
+   </div>
+    
+  {% endif %}
+  <div class="row mt-4">
+    
+    <div class="col-12">
+      <div class="card my-4">
+        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+          <div
+            class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3"
+          >
+            <h6 class="text-white text-capitalize ps-3">Add City for scouter </h6>
+          </div>
+        </div>
+         <!-- Form -->
+         <div class="Form_image">
+    <div class="card-body mt-4" id="formContainer">
+        <form action="{{ url_for('scouter_bp.Add_city') }}" method="post">
+            <div class="mb-3">
+              <label for="cityID" class="form-label">City ID:</label>
+              <input type="text" class="form-control" id="cityID" name="cityID" placeholder="Enter City ID" required>
+            </div>
+          
+            <div class="mb-3">
+              <label for="country" class="form-label">Country:</label>
+              <input type="text" class="form-control" id="country" name="country" placeholder="Enter Country" required>
+            </div>
+          
+            <!-- Tags input with ability to add and remove tags -->
+            <div class="mb-3">
+              <label for="tags" class="form-label">Tags:</label>
+              <div id="tags-wrapper" style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
+                <!-- Initially add one tag input -->
+                <div class="tag-item" style="display: flex; align-items: center; gap: 10px;">
+                  <input type="text" class="form-control tag-input" name="tags[]" placeholder="Enter a tag">
+                  <button type="button" class="btn remove-tag-btn" style="background: none; border: none; color: red; font-size: 1.5rem;">&times;</button>
+                </div>
+              </div>
+              <button type="button" class="btn btn-secondary mt-2" id="addTagBtn">Add Tag</button>
+            </div>
+          
+            <input type="hidden" name="action" value="Text">
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+          
+    </div>
+    
+       <div class="img_mb-3"><img src="https://messagemedia.com/au/wp-content/uploads/sites/3/2020/10/Examples-of-Automated-SMS-phone-3.jpg" alt=""></div>
+      </div>
+       <!-- End Form -->
+    <!-- Total Rows -->
+
+  {% include 'includes/footer.html' %}
+</div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<script>
+  $(document).ready(function() {
+    $('#customFileBtn').click(function() {
+      // Trigger click on the hidden file input
+      $('#csvFile').trigger('click');
+    });
+
+    $('#csvFile').change(function() {
+      // Show loader
+      $('#csvLoader').show();
+
+      // Display selected file name
+      const fileName = $(this).val().split('\\').pop();
+      $('#selectedFileName').text('Selected File: ' + fileName);
+
+      // Clear existing preview
+      $('#csvPreview').empty();
+
+      // Read the contents of the CSV file
+      const fileInput = document.getElementById('csvFile');
+      const file = fileInput.files[0];
+
+      if (file) {
+        const reader = new FileReader();
+
+        reader.onload = function(e) {
+          const csvData = e.target.result;
+          const rows = csvData.split('\n');
+
+          // Create a table for preview
+          const table = $('<table class="table"></table>');
+
+          // Add header row
+          const headerRow = $('<tr></tr>');
+          const headers = rows[0].split(',');
+          headers.forEach(header => {
+            headerRow.append($('<th scope="col">' + header + '</th>'));
+          });
+          table.append($('<thead></thead>').append(headerRow));
+
+          // Add data rows
+          for (let i = 1; i < rows.length; i++) {
+            const dataRow = $('<tr></tr>');
+            const rowData = rows[i].split(',');
+            rowData.forEach(data => {
+              dataRow.append($('<td>' + data + '</td>'));
+            });
+            table.append($('<tbody></tbody>').append(dataRow));
+          }
+
+          // Append the table to the preview container
+          $('#csvPreview').append(table);
+
+          // Display total number of rows
+          $('#totalRows').text('Total Rows: ' + (rows.length - 1));
+
+          // Hide loader after preview is ready
+          $('#csvLoader').hide();
+        };
+
+        reader.readAsText(file);
+      }
+    });
+  });
+</script>
+
+
+<script>
+    // Function to handle adding new tag inputs
+    document.getElementById('addTagBtn').addEventListener('click', function () {
+      const wrapper = document.getElementById('tags-wrapper');
+  
+      const tagItem = document.createElement('div');
+      tagItem.classList.add('tag-item');
+      tagItem.style.display = 'flex';
+      tagItem.style.alignItems = 'center';
+      tagItem.style.gap = '10px';
+  
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.name = 'tags[]';
+      input.classList.add('form-control', 'tag-input');
+      input.placeholder = 'Enter a tag';
+  
+      const removeBtn = document.createElement('button');
+      removeBtn.type = 'button';
+      removeBtn.classList.add('btn', 'remove-tag-btn');
+      removeBtn.style.background = 'none';
+      removeBtn.style.border = 'none';
+      removeBtn.style.color = 'red';
+      removeBtn.style.fontSize = '1.5rem';
+      removeBtn.innerHTML = '&times;'; // Cross icon
+  
+      // Add the remove functionality
+      removeBtn.addEventListener('click', function () {
+        wrapper.removeChild(tagItem);
+      });
+  
+      tagItem.appendChild(input);
+      tagItem.appendChild(removeBtn);
+      wrapper.appendChild(tagItem);
+    });
+  
+    // Handle removing the initial tag input
+    document.querySelectorAll('.remove-tag-btn').forEach(btn => {
+      btn.addEventListener('click', function (event) {
+        const wrapper = document.getElementById('tags-wrapper');
+        const tagItem = event.target.closest('.tag-item');
+        wrapper.removeChild(tagItem);
+      });
+    });
+  </script>{% endblock javascripts %}
