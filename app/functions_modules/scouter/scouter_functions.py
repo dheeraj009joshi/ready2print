@@ -9,7 +9,7 @@ import os
 import sys
 
 # from places_google_script import get_data
-from ...functions_modules.scouter.places_google_script import get_data
+from ...functions_modules.scouter.places_google_script import get_data,get_proxies
 # from insert_places import get_data
 
 @dataclass
@@ -78,7 +78,7 @@ def Add_places_city_main(cityID,country,tags):
     ########
     # input 
     ########
-    
+    proxies=get_proxies()
     # read search from arguments
     parser = argparse.ArgumentParser()
     parser.add_argument("-s", "--search", type=str)
@@ -104,7 +104,7 @@ def Add_places_city_main(cityID,country,tags):
     # scraping
     ###########
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=False)
+        browser = p.chromium.launch(headless=True)
         page = browser.new_page()
 
         page.goto("https://www.google.com/maps", timeout=60000)
@@ -226,7 +226,7 @@ def Add_places_city_main(cityID,country,tags):
                     
                     business.latitude, business.longitude = extract_coordinates_from_url(page.url)
                     search_string=search_for.split("in")[-1]
-                    get_data(f"{business.name} {business.address}",search_string, cityID, country)
+                    get_data(f"{business.name} {business.address}",search_string, cityID, country,proxies)
                     # print(business)
                     print(business)
                     business_list.business_list.append(business)

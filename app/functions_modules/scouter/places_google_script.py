@@ -13,25 +13,28 @@ import calendar
 from urllib.parse import quote
 import requests
 import random
-search_url = "https://list.didsoft.com/get?email=rajeshkumardevapp@gmail.com&pass=zxamw8&pid=http1000&showcountry=no&level=1&country=US"
-search_url2 = "https://list.didsoft.com/get?email=rajeshkumardevapp@gmail.com&pass=zxamw8&pid=http1000&showcountry=no&level=2&country=US"
-search_url3 = "https://list.didsoft.com/get?email=rajeshkumardevapp@gmail.com&pass=zxamw8&pid=http1000&showcountry=no&level=3&country=US"
-urls=[]
 
-resp = urllib.request.urlopen(urllib.request.Request(url=search_url, data=None))
-data = resp.read().decode('utf-8').split('/*""*/')[0]
-for i in data.split("\n"):
-    urls.append(i)
-resp = urllib.request.urlopen(urllib.request.Request(url=search_url2, data=None))
-data = resp.read().decode('utf-8').split('/*""*/')[0]
-for i in data.split("\n"):
-    urls.append(i)
-resp = urllib.request.urlopen(urllib.request.Request(url=search_url3, data=None))
-data = resp.read().decode('utf-8').split('/*""*/')[0]
-for i in data.split("\n"):
-    urls.append(i)
-print(len(urls))
-def get_data(placename,search, cityID, country):
+
+def get_proxies():
+    urls=[]
+    search_url = "https://list.didsoft.com/get?email=rajeshkumardevapp@gmail.com&pass=zxamw8&pid=http1000&showcountry=no&level=1&country=US"
+    search_url2 = "https://list.didsoft.com/get?email=rajeshkumardevapp@gmail.com&pass=zxamw8&pid=http1000&showcountry=no&level=2&country=US"
+    search_url3 = "https://list.didsoft.com/get?email=rajeshkumardevapp@gmail.com&pass=zxamw8&pid=http1000&showcountry=no&level=3&country=US"
+    resp = urllib.request.urlopen(urllib.request.Request(url=search_url, data=None))
+    data = resp.read().decode('utf-8').split('/*""*/')[0]
+    for i in data.split("\n"):
+        urls.append(i)
+    resp = urllib.request.urlopen(urllib.request.Request(url=search_url2, data=None))
+    data = resp.read().decode('utf-8').split('/*""*/')[0]
+    for i in data.split("\n"):
+        urls.append(i)
+    resp = urllib.request.urlopen(urllib.request.Request(url=search_url3, data=None))
+    data = resp.read().decode('utf-8').split('/*""*/')[0]
+    for i in data.split("\n"):
+        urls.append(i)
+    return urls
+    
+def get_data(placename,search, cityID, country,urls):
     try:
         # data=json.loads(str(data).replace("'",'"'))
         # print(type(data))
