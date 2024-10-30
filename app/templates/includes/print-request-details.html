@@ -1,0 +1,97 @@
+<div class="container-fluid mt-4">
+    <!-- Back Button -->
+    <a href="{{ url_for('general_bp.all_requests') }}" class="btn btn-secondary mb-3">
+        <i class="fas fa-arrow-left"></i> Back
+    </a>
+
+    <div class="card">
+        <div class="card-header bg-gradient-primary text-white">
+            <h5 class="text-white text-capitalize ps-3">Print Request Details: {{ request.name }}</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <h6 class="text-uppercase text-secondary">User Details</h6>
+                    <p><strong>Name:</strong> {{ request.users.name }}</p>
+                    <p><strong>Phone No:</strong> {{ request.users.phoneNo }}</p>
+                </div>
+                <div class="col-md-6">
+                    <h6 class="text-uppercase text-secondary">Printer Details</h6>
+                    <p><strong>Name:</strong> {{ request.printerOwners.name }}</p>
+                    <p><strong>Phone No:</strong> {{ request.printerOwners.phoneNo }}</p>
+                </div>
+            </div>
+            <hr>
+            <h6 class="text-uppercase text-secondary">Status</h6>
+            <p>
+                {% if request.PrintsRequestStatus %}
+                <span class="badge badge-sm bg-gradient-success">Completed</span>
+                {% else %}
+                <span class="badge badge-sm bg-gradient-secondary">Pending</span>
+                {% endif %}
+            </p>
+
+            <hr>
+            <h6 class="text-uppercase text-secondary">Documents Assigned</h6>
+            <div class="table-responsive" style="overflow-x: auto; white-space: nowrap;">
+                <table class="table align-items-center mb-0 w-100">
+                    <thead>
+                        <tr>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Document Name</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Total Pages</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Quantity</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Print Type</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Download</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for document in request.documentsAssigned %}
+                        <tr>
+                            <td>
+                                <h6 class="mb-0 text-sm">{{ document.documentName }}</h6>
+                            </td>
+                            <td>
+                                <p class="text-xs font-weight-bold mb-0">{{ document.totalPages }}</p>
+                            </td>
+                            <td>
+                                <p class="text-xs font-weight-bold mb-0">{{ document.documentPrintQuantity }}</p>
+                            </td>
+                            <td>
+                                <p class="text-xs font-weight-bold mb-0">{{ document.documentPrintType }}</p>
+                            </td>
+                            <td class="text-center">
+                                
+                                <a href="{{ url_for('general_bp.print_request', pdf=document.documentUrl) }}" target="_blank" class="btn btn-sm btn-primary">
+                                    {% if session['user_role']=='USER'%} Download {% else %} Print {% endif %}
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+                {% if session['user_role'] == 'PRINTER' and not request.PrintsRequestStatus %}
+                
+                    <a href="{{url_for('print_req_bp.update_print_request',request_id=request._id)}}" class="btn btn-sm btn-success ms-2">
+                      Mark as printed  
+                    </a>
+                    {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Custom CSS for Mobile Responsiveness -->
+<style>
+    .container-fluid {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .table {
+        width: 100% !important; /* Ensures the table is 100% width */
+    }
+   
+</style>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

@@ -1,18 +1,17 @@
-import time
-import ssl
+
 from functools import wraps
-from flask import session,redirect,url_for,request, render_template
+import uuid
+from flask import session,redirect,url_for,request
 from bson.objectid import ObjectId
-from selenium import webdriver
-from app.DB.Db_config import collection
-import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
+
+# from app.DB.Db_config import collection
+
+from app.DB.Db_config import USER_collection, PrintOwner_collection,PrintRequest_collection
 
 def login_required(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
-        if 'user_id' in session and 'username' in session:
+        if 'user_id' in session :
             return func(*args, **kwargs)
         else:
             # Store the requested URL in the session before redirecting to login
@@ -22,73 +21,82 @@ def login_required(func):
     
 
 
+from azure.storage.blob import BlobServiceClient
+import os
 
+# Azure Blob Storage connection details
+AZURE_STORAGE_CONNECTION_STRING = "DefaultEndpointsProtocol=https;AccountName=printxd;AccountKey=Pz1cNIgzVh25s5Ipcicxj/VBIeFaVgv8WVB0OqRz29kqUHU44Ymrr0Rkg4GF/ejQcikRa7SYrhqH+AStppjSHA==;EndpointSuffix=core.windows.net"
+CONTAINER_NAME = "printcu"
 
-def onelogin_login():
-    time.sleep(10)
-    for i in range(23):
-        print(i)
-        time.sleep(1)
+blob_service_client = BlobServiceClient.from_connection_string(AZURE_STORAGE_CONNECTION_STRING)
+
+def upload_document_to_blob(file):
+
+        # Get a client for the container
+        container_client = blob_service_client.get_container_client(CONTAINER_NAME)
+        unique_filename = f"{uuid.uuid4()}_{file.filename}"
+        # Generate a unique file name to avoid overwrites
+        blob_client = container_client.get_blob_client(unique_filename)
         
-    return True
-
-def selenium_task():
-    global selenium_status
-    try:
-        # Update status - script started
-
-        # Create a new WebDriver instance
-        driver = webdriver.Chrome()  # Adjust the path to your chromedriver executable
-
-        try:
-            # Perform Selenium actions here
-            driver.get('https://www.google.com')
-            time.sleep(100)
-            selenium_status = {'message': 'Search performed', 'progress': 100}
-          
-
-        finally:
-            # Close the WebDriver instance to avoid resource leaks
-            driver.quit()
-
-    except Exception as e:
-        # Handle exceptions and update status accordingly
-        selenium_status = {'message': f'Selenium script failed: {str(e)}', 'progress': 100}
-      
-def send_email(subject, body):
-    try:
-        sender_email = 'support@bixid.in'
-        sender_password = 'support@bixid'
-        recipient_email = 'j.b.fitterman@gmail.com'
-        msg = MIMEMultipart()
-        msg['From'] = sender_email
-        msg['To'] = recipient_email
-        msg['Subject'] = subject
-        msg.attach(MIMEText(body, 'plain'))
-        context = ssl.create_default_context()
-        with smtplib.SMTP_SSL('mum2.hostarmada.net', 465, context=context) as server:
-            # server.starttls()
-            print(' email server started ')
-            server.login(sender_email, sender_password)
-            print(' email logged in  ')
-            server.sendmail(sender_email, recipient_email, msg.as_string())
-            data={"Status": "Success","Message":"Thanks for placing your request, our customer success team will ping you shortly"}
-            return  data 
-    except Exception as e:
-        data= {"Status": "Fail","Message":f"There is some error contact to our customer care for support {e}"}
-        return data 
-
-  
+        # Upload the file directly from the request
+        blob_client.upload_blob(file.stream)
         
+        # Return the URL of the uploaded blob
+        return blob_client.url
+
+from bson import ObjectId
+
+def serialize(data):
+    def convert_objectid(item):
+        if isinstance(item, dict):
+            return {k: convert_objectid(v) for k, v in item.items()}
+        elif isinstance(item, list):
+            return [convert_objectid(v) for v in item]
+        elif isinstance(item, ObjectId):
+            return str(item)
+        else:
+            return item
+
+    # Check if data is a single object or a list
+    if isinstance(data, list):
+        return [convert_objectid(i) for i in data]
+    elif isinstance(data, dict):
+        return convert_objectid(data)
+    else:
+        return data
 def current_user():
     # Check if the user is logged in
     if 'user_id' in session:
         user_id = session['user_id']
 
         # Retrieve user data from MongoDB using the user_id
-        user_data = collection.find_one({'_id': ObjectId(user_id)})
+        try:
+            user_data = USER_collection.find_one({'_id': ObjectId(user_id)}) or PrintOwner_collection.find_one({'_id': ObjectId(user_id)})
+            printer_request_ids = [ObjectId(id_) for id_ in  user_data['print_requests']]
+            print(printer_request_ids)
+            printer_requests = list(PrintRequest_collection.find({"_id": {"$in": printer_request_ids}}))
+            print(printer_requests)
+            # Filter for pending requests
+            pending_requests = [req for req in printer_requests if req['PrintsRequestStatus'] == False]
+            user_data['status_pending']=serialize(pending_requests)
+            user_data['pending_requests_count'] = len(pending_requests)
+            finished_requests = [req for req in printer_requests if req['PrintsRequestStatus'] == True]
+            user_data['status_done']=serialize(finished_requests)
+            user_data['status_done_count'] = len(finished_requests)
+        except:
+            user_data['status_done_count']=0
+            user_data['pending_requests_count']=0
+            user_data['status_pending']=[]
+            user_data['status_done']=[]
 
         return user_data
     
+def user_by_id(id):
+        user_data = USER_collection.find_one({'_id': ObjectId(id)}) or PrintOwner_collection.find_one({'_id': ObjectId(id)})
+        if user_data:
+            return user_data
+        else:
+            return None
+
 
 

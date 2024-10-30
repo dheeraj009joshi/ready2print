@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Print Request</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Create Print Request</h1>
+        <form id="printRequestForm" method="post" action="{{url_for('print_req_bp.create_print_request')}}" enctype="multipart/form-data">
+            <!-- Name -->
+            <div class="mb-3">
+                <label for="name" class="form-label">Request Name</label>
+                <input type="text" class="form-control" id="name" name="name" required>
+            </div>
+
+            <!-- Document Assigned -->
+            <h3>Assign Documents</h3>
+            <div id="documentsContainer">
+                <div class="document-item">
+                    <div class="mb-3">
+                        <label for="documentType1" class="form-label">Document Type</label>
+                        <select class="form-select" id="documentType1" name="documentPrintType[]" required>
+                            <option value="colored">Colored</option>
+                            <option value="black&white">Black & White</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="documentQuantity1" class="form-label">Quantity</label>
+                        <input type="number" class="form-control" id="documentQuantity1" name="documentQuantity[]" min="1" value="1" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="documentFile1" class="form-label">Upload Document</label>
+                        <input type="file" class="form-control" id="documentFile1" name="documentFile[]" accept=".pdf" required>
+                    </div>
+                    <button type="button" class="btn btn-danger" onclick="removeDocument(this)">Delete</button>
+                </div>
+            </div>
+            <button type="button" class="btn btn-secondary mb-3" onclick="addDocument()">Add Another Document</button>
+
+            <!-- Submit -->
+            <button type="submit" class="btn btn-primary">Submit Print Request</button>
+        </form>
+    </div>
+
+    <script>
+        let documentCounter = 1;
+
+        // Add another document input section
+        function addDocument() {
+            documentCounter++;
+            const documentContainer = document.createElement('div');
+            documentContainer.classList.add('document-item');
+
+            documentContainer.innerHTML = `
+                <hr />
+                <div class="mb-3">
+                    <label for="documentType${documentCounter}" class="form-label">Document Type</label>
+                    <select class="form-select" id="documentType${documentCounter}" name="documentPrintType[]" required>
+                        <option value="colored">Colored</option>
+                        <option value="black&white">Black & White</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="documentQuantity${documentCounter}" class="form-label">Quantity</label>
+                    <input type="number" class="form-control" id="documentQuantity${documentCounter}" name="documentQuantity[]" min="1" value="1" required>
+                </div>
+                <div class="mb-3">
+                    <label for="documentFile${documentCounter}" class="form-label">Upload Document</label>
+                    <input type="file" class="form-control" id="documentFile${documentCounter}" name="documentFile[]" accept=".pdf" required>
+                </div>
+                <button type="button" class="btn btn-danger" onclick="removeDocument(this)">Delete</button>
+            `;
+
+            document.getElementById('documentsContainer').appendChild(documentContainer);
+        }
+
+        // Function to remove a document input section
+        function removeDocument(button) {
+            const documentItem = button.closest('.document-item');
+            if (documentItem) {
+                documentItem.remove();
+            }
+        }
+
+        
+    </script>
+</body>
+</html>

@@ -1,26 +1,90 @@
-import requests
+from flask import Flask, json, request, jsonify, render_template
+from azure.storage.blob import BlobServiceClient
 
-url = "https://api.hikerapi.com/a1/user/by/username"
-params = {'username': 'wwe', 'access_key': 'lhj296a0Jh95iJyGs5cAIiA8Aq36AiU4'}
-headers = {'accept': 'application/json'}
+app = Flask(__name__)
 
-response = requests.get(url, params=params, headers=headers)
+# Azure Blob Storage connection details
+AZURE_STORAGE_CONNECTION_STRING = "DefaultEndpointsProtocol=https;AccountName=printxd;AccountKey=Pz1cNIgzVh25s5Ipcicxj/VBIeFaVgv8WVB0OqRz29kqUHU44Ymrr0Rkg4GF/ejQcikRa7SYrhqH+AStppjSHA==;EndpointSuffix=core.windows.net"
+CONTAINER_NAME = "printcu"
 
-if response.status_code == 200:
-    # Request was successful
-    data = response.json()
-    print(data)
-else:
-    # Request failed
-    print(f"Error {response.status_code}: {response.text}")
+# Initialize the BlobServiceClient
+blob_service_client = BlobServiceClient.from_connection_string(AZURE_STORAGE_CONNECTION_STRING)
 
+def upload_document_to_blob(file):
+    try:
+        # Get a client for the container
+        container_client = blob_service_client.get_container_client(CONTAINER_NAME)
+        
+        # Use the file's original name (or you can generate a unique name)
+        blob_client = container_client.get_blob_client(file.filename)
+        
+        # Upload the file stream directly to Azure Blob
+        blob_client.upload_blob(file.stream)
+        
+        # Return the URL of the uploaded blob
+        return blob_client.url
 
-from instagrapi import Client
+    except Exception as e:
+        print(f"Error uploading document: {e}")
+        return None
 
-cl=Client(session={'uuids': {'phone_id': 'aae9fba8-6e76-44ee-a4fd-7d7a5b390ebb', 'uuid': 'a3447d7a-46fe-4026-99ff-9d2e0ea5a621', 'client_session_id': '874af527-d6a3-4c99-b805-c2550d4e3853', 'advertising_id': '2b0e5dd0-b792-4438-ba7b-0e0816ac2060', 'android_device_id': 'android-5c8ccc88ad99b388', 'request_id': '4be3e6c4-3e2d-423d-b174-e033e85c45a3', 'tray_session_id': '2fa49c01-7334-481c-a3f6-4e029767489b'}, 'mid': 'ZeM7vQABAAGoRrzXTJb-RIBKKvXv', 'ig_u_rur': None, 'ig_www_claim': None, 'authorization_data': {'ds_user_id': '50648708396', 'sessionid': '50648708396%3AlOdexoEcm36mr8%3A9%3AAYdzCRMtE482KAkUmIJUmEl-qjbNvHWur5JZA5eOJA'}, 'cookies': {}, 'last_login': 1709390794.0164678, 'device_settings': {'app_version': '269.0.0.18.75', 'android_version': 26, 'android_release': '8.0.0', 'dpi': '480dpi', 'resolution': '1080x1920', 'manufacturer': 'OnePlus', 'device': 'devitron', 'model': '6T Dev', 'cpu': 'qcom', 'version_code': '314665256'}, 'user_agent': 'Instagram 269.0.0.18.75 Android (26/8.0.0; 480dpi; 1080x1920; OnePlus; 6T Dev; devitron; qcom; en_US; 314665256)', 'country': 'US', 'country_code': 1, 'locale': 'en_US', 'timezone_offset': -14400} )
+@app.route('/upload', methods=['POST'])
+def upload_file():
+    if 'file' not in request.files:
+        return jsonify({"error": "No file part"}), 400
 
-print(cl.get_settings())
+    file = request.files['file']
 
-user_info=cl.user_id_from_username("Dheeraj_joshi2006")
+    if file.filename == '':
+        return jsonify({"error": "No selected file"}), 400
 
-print(user_info)
+    # Upload the PDF file to Azure Blob Storage
+    uploaded_url = upload_document_to_blob(file)
+    
+    if uploaded_url:
+        return jsonify({"message": "File uploaded successfully", "url": uploaded_url}), 200
+    else:
+        return jsonify({"error": "Upload failed"}), 500
+    
+
+@app.route('/')
+def index():
+    return render_template("tt.html")
+@app.route('/api/print-requests', methods=['POST'])
+def create_print_request():
+    name = request.form.get('name')
+    users = json.loads(request.form.get('users'))  # Get user object
+    printer_owners = json.loads(request.form.get('printerOwners'))  # Get printer owner object
+    
+    documents = []
+    
+    for i, file in enumerate(request.files.getlist('documentFile[]')):
+        document_name = request.form.getlist('documentName[]')[i]
+        document_type = request.form.getlist('documentPrintType[]')[i]
+        
+        # Upload document to Azure Blob Storage
+        document_url = upload_document_to_blob(file)
+        
+        documents.append({
+            "documentName": document_name,
+            "documentUrl": document_url,
+            "documentPrintType": document_type
+        })
+    
+    # Build the print request object
+    print_request = {
+        "name": name,
+        "users": users,
+        "printerOwners": printer_owners,
+        "PrintsRequestStatus": False,
+        "documentsAssigned": documents
+    }
+    
+    # Simulate saving the print request (in a database or further processing)
+    print(f"Print request created: {print_request}")
+    
+    # Return the print request as a response (replace with real ID after saving in DB)
+    return jsonify({"id": "123", "message": "Print request created successfully"}), 200
+
+if __name__ == '__main__':
+    app.run(debug=True)

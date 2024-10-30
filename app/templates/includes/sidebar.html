@@ -19,103 +19,21 @@
               </a>
           </li>
 
-          <!-- Toyota Pages Dropdown -->
-          <li class="nav-item mt-3">
-              <a class="nav-link dropdown-toggle text-white" data-bs-toggle="collapse" href="#toyota-pages" role="button" aria-expanded="{% if 'tables' in segment or 'auto_email' in segment or 'auto_text' in segment %}true{% else %}false{% endif %}" aria-controls="toyota-pages">
-                <i class="material-icons">directions_car</i>  
-                <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Toyota work</h6>
-              </a>
-              <div class="collapse {% if 'tables' in segment or 'auto_email' in segment or 'auto_text' in segment %}show{% endif %}" id="toyota-pages">
-                  <ul class="nav flex-column ms-4">
-                      <li class="nav-item">
-                          <a class="nav-link text-white {% if 'tables' in segment %} active bg-gradient-primary {% endif %}" href="{{url_for('general_bp.leads')}}">
-                              <i class="material-icons opacity-10">table_view</i>
-                              <span class="nav-link-text ms-1">All Leads</span>
-                          </a>
-                      </li>
-                      <li class="nav-item">
-                          <a class="nav-link text-white {% if 'auto_email' in segment %} active bg-gradient-primary {% endif %}" href="{{url_for('general_bp.AUTO_EMAIL')}}">
-                              <i class="material-icons opacity-10">table_view</i>
-                              <span class="nav-link-text ms-1">Auto Email</span>
-                          </a>
-                      </li>
-                      <li class="nav-item">
-                          <a class="nav-link text-white {% if 'auto_text' in segment %} active bg-gradient-primary {% endif %}" href="{{url_for('general_bp.AUTO_TEXT')}}">
-                              <i class="material-icons opacity-10">table_view</i>
-                              <span class="nav-link-text ms-1">Auto TEXT</span>
-                          </a>
-                      </li>
-                  </ul>
-              </div>
-          </li>
+   
 
-          <!-- Scouter Pages Dropdown -->
-          <li class="nav-item mt-3">
-              <a class="nav-link dropdown-toggle text-white" data-bs-toggle="collapse" href="#scouter-pages" role="button" aria-expanded="{% if 'add-city' in segment %}true{% else %}false{% endif %}" aria-controls="scouter-pages">
-                <i class="material-icons">search</i>  
-                <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Scouter pages</h6>
-              </a>
-              <div class="collapse {% if 'add-city' in segment %}show{% endif %}" id="scouter-pages">
-                  <ul class="nav flex-column ms-4">
-                      <li class="nav-item">
-                          <a class="nav-link text-white {% if 'add-city' in segment %} active bg-gradient-primary {% endif %}" href="{{url_for('scouter_bp.Add_city')}}">
-                              <i class="material-icons opacity-10">table_view</i>
-                              <span class="nav-link-text ms-1">Add city's all places </span>
-                          </a>
-                      </li>
-                      <li class="nav-item">
-                          <a class="nav-link text-white {% if 'add-place' in segment %} active bg-gradient-primary {% endif %}" href="{{url_for('scouter_bp.Add_city')}}">
-                              <i class="material-icons opacity-10">table_view</i>
-                              <span class="nav-link-text ms-1">Add place </span>
-                          </a>
-                      </li>
-                  </ul>
-              </div>
-          </li>
-
-          <!-- Clearladder Dropdown -->
-          <li class="nav-item mt-3">
-              <a class="nav-link dropdown-toggle text-white" data-bs-toggle="collapse" href="#clearladder-pages" role="button" aria-expanded="{% if 'c-leads' in segment %}true{% else %}false{% endif %}" aria-controls="clearladder-pages">
-                <i class="material-icons">trending_up</i>  
-                <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Clearladder</h6>
-              </a>
-              <div class="collapse {% if 'c-leads' in segment %}show{% endif %}" id="clearladder-pages">
-                  <ul class="nav flex-column ms-4">
-                      <li class="nav-item">
-                          <a class="nav-link text-white {% if 'c-leads' in segment %} active bg-gradient-primary {% endif %}" href="/notifications.html">
-                              <i class="material-icons opacity-10">table_view</i>
-                              <span class="nav-link-text ms-1">All Leads</span>
-                          </a>
-                      </li>
-                     
-                  </ul>
-              </div>
-          </li>
+            <li class="nav-item">
+                <a class="nav-link text-white {% if 'tables' in segment %} active bg-gradient-primary {% endif %}" href="{{url_for('general_bp.all_requests')}}">
+                    <i class="material-icons opacity-10">table_view</i>
+                    <span class="nav-link-text ms-1">All Requests</span>
+                </a>
+            </li>
+              
+               
+                    
+                 
 
 
-           <!-- Asesoria Autos Dropdown -->
-           <li class="nav-item mt-3">
-            <a class="nav-link dropdown-toggle text-white" data-bs-toggle="collapse" href="#Asesoria-Autos-pages" role="button" aria-expanded="{% if 'a-leads' in segment %}true{% else %}false{% endif %}" aria-controls="Asesoria-Autos-pages">
-                <i class="material-icons">directions_car</i>
-                <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Asesoria Autos</h6>
-            </a>
-            <div class="collapse {% if 'a-leads' in segment %}show{% endif %}" id="Asesoria-Autos-pages">
-                <ul class="nav flex-column ms-4">
-                    <li class="nav-item">
-                        <a class="nav-link text-white {% if 'a-leads' in segment %} active bg-gradient-primary {% endif %}" href="/notifications.html">
-                            <i class="material-icons opacity-10">table_view</i>
-                            <span class="nav-link-text ms-1">All Leads</span>
-                        </a>
-                    </li>
-
-                </ul>
-            </div>
-        </li>
-
-
-
-
-
+          
          <!-- lOGOUT-->
         <li class="nav-item">
             <a class="nav-link text-white" href="{{ url_for('general_bp.logout') }}">
