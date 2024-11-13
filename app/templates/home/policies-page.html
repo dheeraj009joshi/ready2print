@@ -1,0 +1,79 @@
+{% extends "layouts/base.html" %} {% block title %} Policies {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %} {% block content %}
+
+<div class="container-fluid py-4">
+ 
+
+  <div class="card-body mt-4">
+    <div class="container mt-5">
+        <h2 class="text-center text-primary mb-4">Policies</h2>
+        
+        <div class="card">
+            <div class="card-body">
+                <!-- Introduction -->
+                <h5 class="text-uppercase text-secondary">Introduction</h5>
+                <p>Welcome to our Print-on-Demand service. By placing an order with us, you agree to the following terms and conditions. These policies are designed to ensure a smooth and transparent experience for our customers and outline the scope and limitations of our services.</p>
+                <hr>
+    
+                <!-- Printing and Delivery -->
+                <h5 class="text-uppercase text-secondary">Printing and Delivery</h5>
+                <p>We strive to provide high-quality printing services and aim to meet our estimated delivery times. However, please note that actual delivery may vary based on factors beyond our control, such as third-party logistics or supply delays. We are not responsible for delivery delays once the order has left our facility.</p>
+                <hr>
+    
+                <!-- Quality Assurance -->
+                <h5 class="text-uppercase text-secondary">Quality Assurance</h5>
+                <p>Our team carefully reviews each order to ensure it meets our quality standards before shipping. Please verify the details, including text, images, and specifications, before placing an order. Any errors in the provided files or specifications are the responsibility of the customer.</p>
+                <hr>
+    
+                <!-- No Refunds Policy -->
+                <h5 class="text-uppercase text-danger">No Refunds Policy</h5>
+                <p><strong>Important:</strong> Due to the personalized nature of print-on-demand services, <span class="text-danger font-weight-bold">all sales are final, and we do not offer refunds</span> under any circumstances. Each product is customized according to your specific requirements, making it non-resellable.</p>
+                <p>Please double-check all order details before confirming your purchase, as modifications or cancellations are not possible once production begins.</p>
+                <hr>
+    
+                <!-- Cancellations and Modifications -->
+                <h5 class="text-uppercase text-secondary">Cancellations and Modifications</h5>
+                <p>Orders cannot be modified or canceled once they have entered the production phase. We encourage customers to review their order details carefully prior to submission.</p>
+                <hr>
+    
+                <!-- Intellectual Property -->
+                <h5 class="text-uppercase text-secondary">Intellectual Property</h5>
+                <p>By submitting your designs to us, you confirm that you hold the necessary rights to the content and that it does not infringe on third-party copyrights, trademarks, or other intellectual property rights. We reserve the right to reject any content that violates these terms.</p>
+                <hr>
+    
+                <!-- Privacy Policy -->
+                <h5 class="text-uppercase text-secondary">Privacy Policy</h5>
+                <p>We value your privacy and are committed to protecting your personal information.</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Custom CSS for Styling -->
+    <style>
+        .container {
+            max-width: 800px;
+        }
+        .card {
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        .text-danger {
+            font-weight: bold;
+        }
+    </style>
+    
+
+  </div>
+  {% include 'includes/footer.html' %}
+</div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+{% endblock javascripts %}

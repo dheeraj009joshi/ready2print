@@ -4,6 +4,7 @@ import os
 from PyPDF2 import PdfReader
 from app.DB.Db_config import USER_collection,PrintOwner_collection,PrintRequest_collection
 from app.Model.Print_req_model import PrintsRequests
+from app.config import user_price_black_white, printer_price_black_white,user_price_colored,printer_price_colored
 print_req_bp = Blueprint('print_req_bp', __name__)
 
 
@@ -37,15 +38,15 @@ def create_print_request():
             else:
                 total_pages = 1  # Default for non-PDF files or if you don't need to calculate
             if document_type=="colored":
-                price=11*int(total_pages)*int(document_quantity)
+                price=user_price_colored*int(total_pages)*int(document_quantity)
                 user_total_request_price+=price
                 
-                pprice=10*int(total_pages)*int(document_quantity)
+                pprice=printer_price_colored*int(total_pages)*int(document_quantity)
                 printer_total_request_price+=pprice
             else:
-                price=2.5*int(total_pages)*int(document_quantity)
+                price=user_price_black_white*int(total_pages)*int(document_quantity)
                 user_total_request_price+=price
-                pprice=2*int(total_pages)*int(document_quantity)
+                pprice=printer_price_black_white*int(total_pages)*int(document_quantity)
                 printer_total_request_price+=pprice
                 
             documents.append({
@@ -63,6 +64,7 @@ def create_print_request():
             "printerOwners": printer_owners,
             "PrintsRequestStatus": False,
             "documentsAssigned": documents,
+            "paymentStatus":"",
             "documentPrintCostU":user_total_request_price,
             "documentPrintCostP":printer_total_request_price
         }
@@ -99,7 +101,7 @@ def create_print_request():
         # Simulate saving the print request (in a database or further processing)
         print(f"Print request created: {print_request_data}")
         flash("Print Requested Successfully","success")
-        return redirect(url_for("general_bp.index"))
+        return redirect(url_for("checkout_bp.index",print_request_id=print_request_id))
     else:
         return render_template("home/printREQUEST.html", user=current_user())
     

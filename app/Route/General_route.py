@@ -113,3 +113,10 @@ def print_request():
     # Serve the PDF with appropriate headers
     return Response(response.content, mimetype='application/pdf',
                     headers={"Content-Disposition": "inline; filename=yourfile.pdf"})
+    
+    
+    
+@general_bp.route('/policies')
+@login_required
+def policies():
+    return render_template("home/policies-page.html",segment="policies")
