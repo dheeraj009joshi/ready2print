@@ -1,0 +1,122 @@
+
+<div class="row">
+    <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+      <a href="{{url_for('general_bp.all_requests')}}"><div class="card">
+        <div class="card-header p-3 pt-2">
+          <div
+            class="icon icon-lg icon-shape bg-gradient-dark shadow-dark text-center border-radius-xl mt-n4 position-absolute"
+          >
+            <i class="material-icons opacity-10">weekend</i>
+          </div>
+          <div class="text-end pt-1">
+            <p class="text-sm mb-0 text-capitalize">Total Print Requests</p>
+            <h4 class="mb-0" id="totalRequests">{{ user.print_requests | length }}</h4>
+          </div>
+        </div>
+        <hr class="dark horizontal my-0" />
+        
+      </div></a>
+    </div>
+    <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+      <a href="{{url_for('general_bp.all_requests')}}"><div class="card">
+        <div class="card-header p-3 pt-2">
+          <div
+            class="icon icon-lg icon-shape bg-gradient-primary shadow-primary text-center border-radius-xl mt-n4 position-absolute"
+          >
+            <i class="material-icons opacity-10">person</i>
+          </div>
+          <div class="text-end pt-1">
+            <p class="text-sm mb-0 text-capitalize">Total pending print requests</p>
+            <h4 class="mb-0" id="totalRequestsPending">{{ user.pending_requests_count }}</h4>
+          </div>
+        </div>
+        <hr class="dark horizontal my-0" />
+        
+      </div></a>
+    </div>
+    {% if session['user_role']=="PRINTER" %}
+    <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+      <div class="card">
+        <div class="card-header p-3 pt-2">
+          <div
+            class="icon icon-lg icon-shape bg-gradient-success shadow-success text-center border-radius-xl mt-n4 position-absolute"
+          >
+            <i class="material-icons opacity-10">money</i>
+          </div>
+          <div class="text-end pt-1">
+            <p class="text-sm mb-0 text-capitalize">Total credits</p>
+            <h4 class="mb-0" id="credits">{{ session['user'].printer_credits or '0' }}</h4>
+          </div>
+        </div>
+        <hr class="dark horizontal my-0" />
+       
+      </div>
+    </div>
+    <div class="col-xl-3 col-sm-6">
+      <div class="card">
+        <div class="card-header p-3 pt-2">
+          <div
+            class="icon icon-lg icon-shape bg-gradient-info shadow-info text-center border-radius-xl mt-n4 position-absolute"
+          >
+            <i class="material-icons opacity-10">support
+            </i>
+          </div>
+          <div class="text-end pt-1">
+            <p class="text-sm mb-0 text-capitalize">Support</p>
+            <h4 class="mb-0" id="your-sale"</h4>
+          </div>
+        </div>
+        <hr class="dark horizontal my-0" />
+        <div class="card-footer p-3">
+        
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+
+</div>
+
+
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+
+<script>
+  /*function updateUserSession() {
+    // Capture user details from the page (you might want to define `userDetails` correctly)
+    
+    // Send user details in a background request to update the session
+    fetch('/update_user_session', {
+        method: 'GET',  // Changed to POST
+       // Send the JSON data in body
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('User session updated:', data);
+        totalRequests = document.getElementById("totalRequests");
+        totalRequests.innerText = data.print_requests.length;  // Changed to innerText
+        totalRequestsPending = document.getElementById("totalRequestsPending");
+        totalRequestsPending.innerText = data.pending_requests_count;  // Changed to innerText
+        try{
+          const creditsElement = document.getElementById("credits");
+        creditsElement.innerText = data.printer_credits;  // Update innerText
+        } catch{
+          console.log(data.printer_credits)
+        } // Changed to innerText
+
+    })
+    .catch((error) => {
+        console.error('Error updating session:', error);
+    });
+}
+
+// Set an interval to update the session every 10 seconds (10000ms)
+setInterval(updateUserSession, 1000);  // Adjust interval as needed */
+</script>
+<!-- Add JavaScript to close the alert on button click -->
+<script>
+  document.getElementById('closeBtn').addEventListener('click', function() {
+      var alert = document.getElementById('pop');
+      alert.style.display = 'none';
+  });
+</script>

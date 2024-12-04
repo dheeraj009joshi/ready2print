@@ -1,0 +1,134 @@
+{% extends "layouts/base.html" %} {% block title %} Policies {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %} {% block content %}
+
+<div class="container-fluid py-4">
+ 
+
+  <div class="card-body mt-4">
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-body">
+    
+            
+            <div class="container">
+                <h2>Terms and Conditions</h2>
+            
+                <div class="card">
+                    <div class="card-header" onclick="toggleCardBody('tc-1')">1. Introduction</div>
+                    <div class="card-body" id="tc-1">
+                        <p>This document is an electronic record in terms of the Information Technology Act, 2000. By using this platform, you agree to abide by these Terms and Conditions.</p>
+                    </div>
+                </div>
+            
+                <div class="card">
+                    <div class="card-header" onclick="toggleCardBody('tc-2')">2. Use of Platform</div>
+                    <div class="card-body" id="tc-2">
+                        <p>Your access to and use of this platform is conditional upon your compliance with the Terms of Use. Unauthorized use of the platform may lead to action as per these Terms or applicable laws.</p>
+                    </div>
+                </div>
+            
+                <div class="card">
+                    <div class="card-header" onclick="toggleCardBody('tc-3')">3. Warranty and Liability</div>
+                    <div class="card-body" id="tc-3">
+                        <p>We do not provide any warranty for the completeness, reliability, or suitability of the content on this platform. The use of the platform is at your own risk, and we will not be liable for any damages arising from its use.</p>
+                    </div>
+                </div>
+            
+                <div class="card">
+                    <div class="card-header" onclick="toggleCardBody('tc-4')">4. Payment and Fees</div>
+                    <div class="card-body" id="tc-4">
+                        <p>You agree to pay for all charges associated with the services you use on this platform. Failure to make payment may result in restriction of services.</p>
+                    </div>
+                </div>
+            
+                <div class="card">
+                    <div class="card-header" onclick="toggleCardBody('tc-5')">5. Changes to Terms</div>
+                    <div class="card-body" id="tc-5">
+                        <p>We may modify these Terms at any time without prior notice. It is your responsibility to regularly check the Terms for updates.</p>
+                    </div>
+                </div>
+            
+                <div class="card">
+                    <div class="card-header" onclick="toggleCardBody('tc-6')">6. Jurisdiction</div>
+                    <div class="card-body" id="tc-6">
+                        <p>All disputes arising from these Terms shall be subject to the jurisdiction of courts in Ghaziabad, Uttar Pradesh, India.</p>
+                    </div>
+                </div>
+            
+                <h2>Privacy Policy</h2>
+            
+                <div class="card">
+                    <div class="card-header" onclick="toggleCardBody('pp-1')">1. Collection of Data</div>
+                    <div class="card-body" id="pp-1">
+                        <p>We collect your personal data during your interactions with our platform. This includes information provided during registration, transactions, or other interactions.</p>
+                    </div>
+                </div>
+            
+                <div class="card">
+                    <div class="card-header" onclick="toggleCardBody('pp-2')">2. Use of Data</div>
+                    <div class="card-body" id="pp-2">
+                        <p>We use your data to provide services, improve customer experience, and prevent fraud. You can opt out of marketing communications.</p>
+                    </div>
+                </div>
+            
+                <div class="card">
+                    <div class="card-header" onclick="toggleCardBody('pp-3')">3. Data Sharing</div>
+                    <div class="card-body" id="pp-3">
+                        <p>We may share your data with third parties to facilitate services, enforce legal obligations, and enhance security. We are not responsible for third-party privacy practices.</p>
+                    </div>
+                </div>
+            
+                <div class="card">
+                    <div class="card-header" onclick="toggleCardBody('pp-4')">4. Security Measures</div>
+                    <div class="card-body" id="pp-4">
+                        <p>We implement reasonable security measures to protect your data. However, data transmission over the internet may not be completely secure, and users are responsible for protecting their account credentials.</p>
+                    </div>
+                </div>
+            
+                <div class="card">
+                    <div class="card-header" onclick="toggleCardBody('pp-5')">5. Data Retention and Deletion</div>
+                    <div class="card-body" id="pp-5">
+                        <p>You may request account deletion, but we may retain data for legitimate purposes. Once deleted, you will lose access to the account and associated data.</p>
+                    </div>
+                </div>
+            
+                <div class="card">
+                    <div class="card-header" onclick="toggleCardBody('pp-6')">6. Your Rights</div>
+                    <div class="card-body" id="pp-6">
+                        <p>You have the right to access, update, and correct your personal data. For any changes, you can contact our support team.</p>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Custom CSS for Styling -->
+    <style>
+        .container {
+            max-width: 800px;
+        }
+        .card {
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        .text-danger {
+            font-weight: bold;
+        }
+    </style>
+    
+
+  </div>
+  {% include 'includes/footer.html' %}
+</div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+{% endblock javascripts %}

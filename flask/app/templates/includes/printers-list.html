@@ -1,0 +1,58 @@
+<style>.MuiCard-root {
+    transition: transform 0.2s ease;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+.MuiCard-root:hover {
+    transform: scale(1.03);
+    box-shadow: 0px 6px 16px rgba(0, 0, 0, 0.15);
+}
+.MuiTypography-colorPrimary {
+    color: #3f51b5 !important;
+}
+.text-info {
+    color: #0288d1 !important;
+}
+.text-danger {
+    color: #e53935 !important;
+}
+</style>
+
+<div class="container mt-5">
+    <h1 class="text-center">Printer Owner</h1>
+    <ul class="list-group">
+        {% for printer in printers %}
+        <div class="MuiPaper-root MuiCard-root mb-3 shadow-sm" style="padding: 16px; border-radius: 8px;">
+            <a href="{{ url_for('general_bp.select_printer', printer_id=printer._id) }}" style="text-decoration: none; color: inherit;">
+                <div class="MuiGrid-container MuiGrid-spacing-xs-3">
+                    <div class="MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-8">
+                        <h5 class="MuiTypography-root MuiTypography-h6 MuiTypography-colorPrimary" style="font-weight: bold;">
+                            <span class="material-icons" style="vertical-align: middle; color: #3f51b5; margin-right: 8px;">email</span>
+                            {{ printer.email }}
+                        </h5>
+                        <p class="MuiTypography-root MuiTypography-body1 d-flex align-items-center" style="color: #757575;">
+                            <span class="material-icons text-info mr-2">phone</span>
+                            <strong>Phone No:</strong> {{ printer.phoneNo }}
+                        </p>
+                        <p class="MuiTypography-root MuiTypography-body1 d-flex align-items-center" style="color: #757575;">
+                            <span class="material-icons text-danger mr-2">location_on</span>
+                            <strong>Location:</strong> {{ printer.location }}
+                        </p>
+                    </div>
+                    <div class="MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-4 d-flex align-items-center justify-content-md-end justify-content-start">
+                        <p class="MuiTypography-root MuiTypography-body1" style="color: #4caf50; font-weight: bold;">
+                            <span class="MuiChip-root MuiChip-colorPrimary MuiChip-sizeSmall mr-1" style="display: flex; align-items: center;">
+                                <span class="material-icons mr-1">pending_actions</span>
+                                {{ printer.pending_requests_count }}
+                            </span>
+                            pending requests
+                        </p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        
+        
+        {% endfor %}
+    </ul>
+</div>
