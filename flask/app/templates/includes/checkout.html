@@ -45,8 +45,8 @@
                             <td>{{ document.totalPages }}</td>
                             <td>{{ document.documentPrintQuantity }}</td>
                             <td>{{ document.documentPrintType }}</td>
-                            <td>${{ "%.2f"|format(document.Ucost) }}</td>
-                            <td>${{ "%.2f"|format(document.Ucost) }}</td>
+                            <td>₹{{ "%.2f"|format(document.Ucost) }}</td>
+                            <td>₹{{ "%.2f"|format(document.Ucost) }}</td>
                         </tr>
                         {% endfor %}
                     </tbody>
