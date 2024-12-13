@@ -1,3 +1,4 @@
+from datetime import datetime
 import uuid
 from flask import Blueprint,  flash,  redirect, render_template, request, jsonify, session, url_for
 from bson import ObjectId
@@ -11,7 +12,13 @@ print_req_bp = Blueprint('print_req_bp', __name__)
 
 from app.function import current_user, upload_document_to_blob, user_by_id
 
-
+def generate_transaction_id(user_id: str, order_id: str) -> str:
+    """
+    Generate a unique transaction ID using user ID, order ID, and a timestamp.
+    """
+    timestamp = datetime.now().strftime('%Y%m%d%H%M%S')  # Format: YYYYMMDDHHMMSS
+    unique_id = uuid.uuid4().hex[:8]  # Generate a short unique ID
+    return f"{timestamp}_{unique_id}"
 
 @print_req_bp.route('/create_print_request', methods=['GET','POST'])
 def create_print_request():
@@ -24,7 +31,8 @@ def create_print_request():
         documents = []
         user_total_request_price=0
         printer_total_request_price=0
-        
+        request_id=str(uuid.uuid4()) # generate a random id for print request 
+        transaction_id=generate_transaction_id(session['user_id'],request_id)  # generate a transaction is given that user id and print request id 
         for i, file in enumerate(request.files.getlist('documentFile[]')):
             document_name = file.filename
             document_quantity = request.form.getlist('documentQuantity[]')[i]
@@ -60,7 +68,7 @@ def create_print_request():
                 "Pcost":pprice
             })
         print_request_data = {
-            "_id":str(uuid.uuid4()),
+            "_id":request_id,
             "name": name,
             "user": users,
             "printerOwner": printer_owners,
@@ -68,37 +76,39 @@ def create_print_request():
             "documentsAssigned": documents,
             "paymentStatus":"",
             "documentPrintCostU":user_total_request_price,
-            "documentPrintCostP":printer_total_request_price
+            "documentPrintCostP":printer_total_request_price,
+            "transaction_id":transaction_id,
+            "transaction_complete":False
         }
 
         # Insert the print request into the collection
         recoard = PrintRequest_collection.insert_one(print_request_data)
         print_request_id = recoard.inserted_id
 
-        # Update the user document to append the new print request ID
-        USER_collection.update_one(
-            {"_id": session['user_id']},  # Assuming users is a dict with an _id field
-            {"$addToSet": {"print_requests": print_request_id}}
-        )
-        try:
-            printer_credits=printer_owners['printer_credits']
-            total_credits=printer_owners['printer_total_credits'] 
-        except:
-            printer_credits=0
-            total_credits=0
+        # # Update the user document to append the new print request ID
+        # USER_collection.update_one(
+        #     {"_id": session['user_id']},  # Assuming users is a dict with an _id field
+        #     {"$addToSet": {"print_requests": print_request_id}}
+        # )
+        # try:
+        #     printer_credits=printer_owners['printer_credits']
+        #     total_credits=printer_owners['printer_total_credits'] 
+        # except:
+        #     printer_credits=0
+        #     total_credits=0
             
-        # Update the printer owner document to append the new print request ID
-        PrintOwner_collection.update_one(
-                {"_id": session['printer_id']},  # Filter criteria
-                {
-                    "$addToSet": {"print_requests": print_request_id},  # Add print request
-                    "$set": {
-                        "printer_credits": printer_credits + printer_total_request_price,
-                        "printer_total_credits": total_credits + printer_total_request_price
-                    }
-                },
-                upsert=True  # Upsert option
-            )
+        # # Update the printer owner document to append the new print request ID
+        # PrintOwner_collection.update_one(
+        #         {"_id": session['printer_id']},  # Filter criteria
+        #         {
+        #             "$addToSet": {"print_requests": print_request_id},  # Add print request
+        #             "$set": {
+        #                 "printer_credits": printer_credits + printer_total_request_price,
+        #                 "printer_total_credits": total_credits + printer_total_request_price
+        #             }
+        #         },
+        #         upsert=True  # Upsert option
+        #     )
 
         # Simulate saving the print request (in a database or further processing)
         print(f"Print request created: {print_request_data}")

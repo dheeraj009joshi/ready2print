@@ -48,11 +48,19 @@
   {% include 'includes/sidebar.html' %}
 
   <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
-  
+    {% with messages = get_flashed_messages(with_categories=True) %}
+    {% if messages %}
+        <ul>
+            {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endwith %}
     {% include "includes/navbar.html" %}
    
     {% block content %}{% endblock content %}
-
+    
   </main>
 
   {% include 'includes/fixed-plugin.html' %}

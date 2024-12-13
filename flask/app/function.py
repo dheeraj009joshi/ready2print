@@ -25,7 +25,7 @@ from azure.storage.blob import BlobServiceClient
 import os
 
 # Azure Blob Storage connection details
-AZURE_STORAGE_CONNECTION_STRING = "DefaultEndpointsProtocol=https;AccountName=printxd;AccountKey=Pz1cNIgzVh25s5Ipcicxj/VBIeFaVgv8WVB0OqRz29kqUHU44Ymrr0Rkg4GF/ejQcikRa7SYrhqH+AStppjSHA==;EndpointSuffix=core.windows.net"
+AZURE_STORAGE_CONNECTION_STRING = "DefaultEndpointsProtocol=https;AccountName=tikuntectweb;AccountKey=hdRH71k9txeyWDLJNZiX/aE2UGGLvPjhDYaMzcDy5o48mdrUrDf1BTcNRbsqQyXPG8juWgTatZsl+AStK45Suw==;EndpointSuffix=core.windows.net"
 CONTAINER_NAME = "printcu"
 
 blob_service_client = BlobServiceClient.from_connection_string(AZURE_STORAGE_CONNECTION_STRING)

@@ -60,7 +60,19 @@
 
                 <!-- Centered Action Button for Checkout -->
                 {% if session['user_role'] == 'USER' %}
-                <a href="" class="btn btn-success">Proceed to Payment</a>
+                <form action="{{ url_for('checkout_bp.pay_now') }}" method="POST">
+                    <!-- Transaction ID -->
+                    <input type="hidden" name="transaction_id" value="{{transaction_id}}">
+                    
+                    <!-- Print Request ID -->
+                    <input type="hidden" name="print_request_id" value="{{request._id}}">
+                    
+                    <!-- Price -->
+                    <input type="hidden" name="price" value="{{ "%.2f"|format(request.documentPrintCostU*100) }}"> <!-- Replace 1000 with actual price -->
+                    
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn btn-success">Proceed to Payment</button>
+                </form>
                 {% endif %}
             </div>
         </div>

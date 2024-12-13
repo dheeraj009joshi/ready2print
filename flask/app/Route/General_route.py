@@ -87,7 +87,7 @@ def all_requests():
 @general_bp.route("/requests-detail/<string:_id>")
 @login_required
 def requests_detail(_id):
-    user=PrintRequest_collection.find_one({"_id":ObjectId(_id)})
+    user=PrintRequest_collection.find_one({"_id":_id})
     user = serialize(user)
     print(user)
     return render_template("home/request-detail-page.html",request=user)
